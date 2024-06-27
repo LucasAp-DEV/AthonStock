@@ -1,5 +1,6 @@
 package com.flow.fast_food_flow.domain.person;
 
+import com.flow.fast_food_flow.domain.store.Store;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class Person implements UserDetails {
     private String name;
     private String email;
     private String phone;
+
+    @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
+    private List<Store> stores = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
     private UserRole role;

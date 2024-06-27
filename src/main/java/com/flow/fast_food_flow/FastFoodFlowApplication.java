@@ -8,6 +8,7 @@ public class FastFoodFlowApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FastFoodFlowApplication.class, args);
+
 		System.out.println("Servidor rodando");
 	}
 
