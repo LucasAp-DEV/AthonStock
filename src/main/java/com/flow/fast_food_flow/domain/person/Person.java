@@ -2,10 +2,7 @@ package com.flow.fast_food_flow.domain.person;
 
 import com.flow.fast_food_flow.domain.store.Store;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,8 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Entity(name = "person")
 public class Person implements UserDetails {
     @Id
@@ -28,7 +24,7 @@ public class Person implements UserDetails {
     private String email;
     private String phone;
 
-    @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<Store> stores = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
@@ -48,4 +44,5 @@ public class Person implements UserDetails {
     public String getUsername() {
         return null;
     }
+
 }
