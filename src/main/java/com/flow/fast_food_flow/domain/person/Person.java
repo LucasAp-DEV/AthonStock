@@ -17,6 +17,7 @@ import java.util.List;
 public class Person implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private String login;
     private String password;
