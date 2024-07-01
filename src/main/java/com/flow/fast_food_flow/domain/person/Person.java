@@ -4,6 +4,7 @@ import com.flow.fast_food_flow.domain.store.Store;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -31,9 +32,19 @@ public class Person implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
+    public Person(String login, String password, String email, String name, String phone, UserRole role) {
+        this.login = login;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
