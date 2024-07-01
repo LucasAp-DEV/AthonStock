@@ -1,5 +1,6 @@
 package com.flow.fast_food_flow.controller;
 
+import com.flow.fast_food_flow.domain.person.LoginPersonDTO;
 import com.flow.fast_food_flow.domain.person.RegisterPersonDTO;
 import com.flow.fast_food_flow.service.PersonService;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,10 @@ public class PersonController {
     @PostMapping("/register")
     public ResponseEntity<?> registerPerson(@RequestBody @Validated RegisterPersonDTO data) {
         return personService.registerPerson(data);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginPerson(@RequestBody @Validated LoginPersonDTO data) {
+        return personService.loginPerson(data);
     }
 }
