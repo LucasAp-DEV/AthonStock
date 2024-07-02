@@ -7,14 +7,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class LoginPersonExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(LoginPersonException.class)
-    public ErrorDTO handler(LoginPersonException ex){
+    public ErrorDTO loginPersonExceptionHandler(LoginPersonException ex){
         return new ErrorDTO(
                 ex.getMessage()
         );
     }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RuntimeException.class)
+    public ErrorDTO RuntimeExceptioHandler(RuntimeException ex){
+        return new ErrorDTO(
+                ex.getMessage()
+        );
+    }
+
 }

@@ -19,8 +19,8 @@ public class PersonController {
     private final PersonService personService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerPerson(@RequestBody @Validated RegisterPersonDTO data) {
-        return personService.registerPerson(data);
+    public void registerPerson(@RequestBody @Validated RegisterPersonDTO data) {
+        personService.registerPerson(data);
     }
 
     @PostMapping("/login")
