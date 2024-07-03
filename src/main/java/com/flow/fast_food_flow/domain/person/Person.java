@@ -13,12 +13,13 @@ import java.util.List;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
-@Entity(name = "person")
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "person")
 public class Person implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
     private String login;
     private String password;
@@ -49,12 +50,32 @@ public class Person implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 }

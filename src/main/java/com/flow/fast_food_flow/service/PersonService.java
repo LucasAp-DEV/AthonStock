@@ -1,13 +1,14 @@
 package com.flow.fast_food_flow.service;
 
 import com.flow.fast_food_flow.domain.excessoes.LoginPersonException;
-import com.flow.fast_food_flow.domain.person.LoginPersonDTO;
+import com.flow.fast_food_flow.domain.person.AuthenticationDTO;
 import com.flow.fast_food_flow.domain.person.LoginResponseDTO;
 import com.flow.fast_food_flow.domain.person.Person;
 import com.flow.fast_food_flow.domain.person.RegisterPersonDTO;
 import com.flow.fast_food_flow.infra.TokenService;
 import com.flow.fast_food_flow.repository.PersonRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class PersonService {
 
@@ -24,10 +25,10 @@ public class PersonService {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
-    public ResponseEntity<LoginResponseDTO> loginPerson(LoginPersonDTO data) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        var authentication = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((Person) authentication.getPrincipal());
+    public ResponseEntity<LoginResponseDTO> loginPerson(String login, String password) {
+        var usernamePassword = new UsernamePasswordAuthenticationToken(login, password);
+        var authenticate = this.authenticationManager.authenticate(usernamePassword);
+        var token = tokenService.generateToken((Person) authenticate.getPrincipal());
         return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
     }
 

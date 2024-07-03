@@ -1,7 +1,6 @@
 package com.flow.fast_food_flow.infra;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.servlet.filter.OrderedHiddenHttpMethodFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,11 +23,12 @@ public class SecurityConfigurations {
     public final SecurityFilter securityFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable) //Desabilitar o csrf
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
+                .authorizeHttpRequests(authorize -> authorize //Autorizando as requisições a baixo
+                        //Requisições user-
                         .requestMatchers(HttpMethod.POST, "/person/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/person/register").permitAll()
                         .anyRequest().authenticated()
@@ -43,7 +43,7 @@ public class SecurityConfigurations {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 }
