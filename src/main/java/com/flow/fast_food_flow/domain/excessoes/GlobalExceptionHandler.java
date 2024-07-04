@@ -19,9 +19,9 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(RuntimeException.class)
-    public ErrorDTO RuntimeExceptioHandler(RuntimeException ex){
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(RegisterPersonException.class)
+    public ErrorDTO RuntimeExceptioHandler(RegisterPersonException ex){
         return new ErrorDTO(
                 ex.getMessage()
         );
