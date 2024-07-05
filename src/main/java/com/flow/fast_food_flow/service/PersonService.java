@@ -1,6 +1,7 @@
 package com.flow.fast_food_flow.service;
 
-import com.flow.fast_food_flow.domain.excessoes.LoginPersonException;
+import com.flow.fast_food_flow.domain.excessoes.CredentialsException;
+import com.flow.fast_food_flow.domain.excessoes.FindByIdException;
 import com.flow.fast_food_flow.domain.excessoes.RegisterPersonException;
 import com.flow.fast_food_flow.domain.person.*;
 import com.flow.fast_food_flow.infra.TokenService;
@@ -11,12 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Objects;
+
 
 @RequiredArgsConstructor
 @Service
@@ -26,22 +27,22 @@ public class PersonService {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
+    public ResponsePersonDTO returnPersonId(Long id) {
+        var personEntity = returnId(id);
+        return convertDTO(personEntity);
+    }
+
     public ResponseEntity<?> loginPerson(AuthenticationDTO data) {
-        if(data.login() == null){
-            throw new LoginPersonException("Necessario insesir um login");
-        }
-        if(data.password() == null){
-            throw new LoginPersonException("Necessario insesir uma senha");
-        }
+        validateAutentication(data);
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         try {
             if (returnLogin(data.login()) == null)
-                throw new LoginPersonException("Usuario nao existe no sistema");
+                throw new CredentialsException("Usuario nao existe no sistema");
             var authenticate = this.authenticationManager.authenticate(usernamePassword);
             var token = tokenService.generateToken((Person) authenticate.getPrincipal());
             return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
         }catch (BadCredentialsException e) {
-            throw new LoginPersonException("Credenciais Invalidas");
+            throw new CredentialsException("Credenciais Invalidas");
         }
     }
 
@@ -55,21 +56,13 @@ public class PersonService {
         personRepository.save(person);
     }
 
-    public ResponseEntity<LoginResponseDTO> updatePerson(Long id, Person person) {
+    public void updatePerson(Long id, UpdatePersonDTO person) {
+        var personEntity = returnId(id);
         try {
-            var userID = returnId(id);
-            userID.setLogin(person.getLogin());
-            userID.setEmail(person.getEmail());
-            userID.setName(person.getName());
-            userID.setPhone(person.getPhone());
-            personRepository.save(userID);
-
-            var usernamePassword = new UsernamePasswordAuthenticationToken(person.getLogin(), person.getPassword());
-            var authenticate = this.authenticationManager.authenticate(usernamePassword);
-            var token = tokenService.generateToken((Person) authenticate.getPrincipal());
-            return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
+            personEntity.bind(person);
+            personRepository.save(personEntity);
         } catch (Exception e) {
-            throw new LoginPersonException("Nao foi possivel autenticar");
+            throw new CredentialsException("Nao foi possivel atualizar o usuario pois " + e.getMessage());
         }
     }
 
@@ -81,6 +74,29 @@ public class PersonService {
         return personRepository.findByEmail(email);
     }
     public Person returnId(Long id) {
-        return personRepository.findById(id).orElseThrow(()-> new RegisterPersonException("Usuario não encontrado"));
+        return personRepository.findById(id).orElseThrow(()-> new FindByIdException("Usuario não encontrado"));
+    }
+
+
+    public ResponsePersonDTO convertDTO(Person person) {
+        ResponsePersonDTO.ResponsePersonDTOBuilder builder = ResponsePersonDTO.builder()
+                .name(person.getName())
+                .role(person.getRole())
+                .login(person.getLogin())
+                .email(person.getEmail())
+                .phone(person.getPhone());
+        return builder.build();
+    }
+
+
+    private void validateAutentication(AuthenticationDTO data) {
+        if (Objects.isNull(data.login()))
+            throw new CredentialsException("Necessario insesir um login");
+        if (data.login().isBlank())
+            throw new CredentialsException("Necessario inserir um login");
+        if (Objects.isNull(data.password()))
+            throw new CredentialsException("Necessario insesir uma senha");
+        if (data.password().isBlank())
+            throw new CredentialsException("Necessario inserir uma senha");
     }
 }

@@ -14,18 +14,23 @@ public class PersonController {
 
     private final PersonService personService;
 
+    @GetMapping("/{id}")
+    public ResponsePersonDTO returnPersonId(@PathVariable(value = "id")Long id) {
+        return personService.returnPersonId(id);
+    }
+
     @PostMapping("/register")
-    public void registerPerson(@RequestBody @Valid RegisterPersonDTO data) {
+    public void registerPerson(@RequestBody RegisterPersonDTO data) {
         personService.registerPerson(data);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginPerson(@RequestBody @Valid AuthenticationDTO data) {
+    public ResponseEntity<?> loginPerson(@RequestBody AuthenticationDTO data) {
         return personService.loginPerson(data);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<LoginResponseDTO> updatePerson(@RequestBody @Valid Person data, @RequestBody @Valid Long id) {
-        return personService.updatePerson(id, data);
+    @PutMapping("/update/{id}")
+    public void updatePerson(@PathVariable(value = "id")Long id, @RequestBody UpdatePersonDTO data) {
+        personService.updatePerson(id, data);
     }
 }

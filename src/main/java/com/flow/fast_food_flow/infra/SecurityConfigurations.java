@@ -25,12 +25,13 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
-                .csrf(AbstractHttpConfigurer::disable) //Desabilitar o csrf
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize //Autorizando as requisições a baixo
-                        //Requisições user-
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.GET, "/person/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/person/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/person/register").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/person/update/{id}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

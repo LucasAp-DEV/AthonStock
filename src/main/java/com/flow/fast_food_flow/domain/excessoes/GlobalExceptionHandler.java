@@ -11,8 +11,8 @@ public class GlobalExceptionHandler {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(LoginPersonException.class)
-    public ErrorDTO loginPersonExceptionHandler(LoginPersonException ex){
+    @ExceptionHandler(CredentialsException.class)
+    public ErrorDTO loginPersonExceptionHandler(CredentialsException ex){
         return new ErrorDTO(
                 ex.getMessage()
         );
@@ -22,6 +22,15 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(RegisterPersonException.class)
     public ErrorDTO RuntimeExceptioHandler(RegisterPersonException ex){
+        return new ErrorDTO(
+                ex.getMessage()
+        );
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(FindByIdException.class)
+    public ErrorDTO RuntimeExceptioHandler(FindByIdException ex){
         return new ErrorDTO(
                 ex.getMessage()
         );

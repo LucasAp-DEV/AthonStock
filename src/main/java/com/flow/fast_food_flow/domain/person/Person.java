@@ -1,5 +1,6 @@
 package com.flow.fast_food_flow.domain.person;
 
+import com.flow.fast_food_flow.domain.excessoes.CredentialsException;
 import com.flow.fast_food_flow.domain.store.Store;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -76,6 +78,20 @@ public class Person implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    private void validatePerson(UpdatePersonDTO person) {
+        if (Objects.isNull(person.name()))
+            throw new CredentialsException("o nome não pode ser nulo");
+        if (person.name().isBlank())
+            throw new CredentialsException("é necessario inserir um nome");
+    }
+
+    public void bind (UpdatePersonDTO person) {
+        validatePerson(person);
+        this.name = person.name();
+        this.email = person.email();
+        this.phone = person.phone();
     }
 
 }
