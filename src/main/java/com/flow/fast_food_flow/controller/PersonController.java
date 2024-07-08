@@ -2,7 +2,6 @@ package com.flow.fast_food_flow.controller;
 
 import com.flow.fast_food_flow.domain.person.*;
 import com.flow.fast_food_flow.service.PersonService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

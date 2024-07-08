@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 @RequiredArgsConstructor
 @Entity(name = "pedido_itens")
-public class PedidoItens {
+public class OrderItens {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class PedidoItens {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", referencedColumnName = "id")
-    private Pedido pedido;
+    private Order pedido;
 
     @ManyToOne
     @JoinColumn(name = "produto_id", referencedColumnName = "id")

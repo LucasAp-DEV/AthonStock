@@ -1,6 +1,5 @@
 package com.flow.fast_food_flow.domain.product;
 
-import com.flow.fast_food_flow.domain.pedido.Pedido;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -29,7 +29,7 @@ public class PersonService {
 
     public ResponsePersonDTO returnPersonId(Long id) {
         var personEntity = returnId(id);
-        return convertDTO(personEntity);
+        return responseBuilderDTO(personEntity);
     }
 
     public ResponseEntity<?> loginPerson(AuthenticationDTO data) {
@@ -78,7 +78,7 @@ public class PersonService {
     }
 
 
-    public ResponsePersonDTO convertDTO(Person person) {
+    public ResponsePersonDTO responseBuilderDTO(Person person) {
         ResponsePersonDTO.ResponsePersonDTOBuilder builder = ResponsePersonDTO.builder()
                 .name(person.getName())
                 .role(person.getRole())

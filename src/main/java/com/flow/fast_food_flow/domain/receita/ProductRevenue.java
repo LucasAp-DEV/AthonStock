@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @RequiredArgsConstructor
 @Entity(name = "product_receita")
-public class ProductReceita {
+public class ProductRevenue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +20,5 @@ public class ProductReceita {
 
     @ManyToOne
     @JoinColumn(name = "receita_id", referencedColumnName = "id")
-    private Receita receita;
+    private Revenue receita;
 }

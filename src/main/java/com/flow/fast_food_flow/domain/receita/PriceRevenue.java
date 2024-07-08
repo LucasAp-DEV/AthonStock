@@ -2,7 +2,6 @@ package com.flow.fast_food_flow.domain.receita;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.type.internal.ImmutableNamedBasicTypeImpl;
 
 import java.time.LocalDate;
 
@@ -10,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @RequiredArgsConstructor
 @Entity(name = "price_receita")
-public class PriceReceita {
+public class PriceRevenue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +19,5 @@ public class PriceReceita {
 
     @ManyToOne
     @JoinColumn(name = "receita_id", referencedColumnName = "id")
-    private Receita receita;
+    private Revenue receita;
 }

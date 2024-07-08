@@ -80,11 +80,10 @@ public class Person implements UserDetails {
         return true;
     }
 
+
     private void validatePerson(UpdatePersonDTO person) {
-        if (Objects.isNull(person.name()))
-            throw new CredentialsException("o nome não pode ser nulo");
-        if (person.name().isBlank())
-            throw new CredentialsException("é necessario inserir um nome");
+        if (Objects.isNull(person.name()) || person.name().isBlank())
+            throw new CredentialsException("É necessario informar um nome");
     }
 
     public void bind (UpdatePersonDTO person) {

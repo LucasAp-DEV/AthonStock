@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 @Entity(name = "receita")
-public class Receita {
+public class Revenue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,5 +23,5 @@ public class Receita {
     private Store store;
 
     @OneToMany(mappedBy = "receita",cascade = CascadeType.ALL)
-    private List<ProductReceita> productReceitas = new ArrayList<>();
+    private List<ProductRevenue> productReceitas = new ArrayList<>();
 }

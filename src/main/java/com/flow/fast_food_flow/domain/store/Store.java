@@ -1,7 +1,7 @@
 package com.flow.fast_food_flow.domain.store;
 
-import com.flow.fast_food_flow.domain.receita.Receita;
-import com.flow.fast_food_flow.domain.pedido.Pedido;
+import com.flow.fast_food_flow.domain.receita.Revenue;
+import com.flow.fast_food_flow.domain.pedido.Order;
 import com.flow.fast_food_flow.domain.person.Person;
 import com.flow.fast_food_flow.domain.product.Product;
 import jakarta.persistence.*;
@@ -22,6 +22,13 @@ public class Store {
     private String address;
     private String cnpj;
 
+    public Store(String name, String address, String cnpj, Person userId) {
+        this.name = name;
+        this.address = address;
+        this.cnpj = cnpj;
+        this.person = userId;
+    }
+
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
@@ -30,9 +37,8 @@ public class Store {
     private List<Product> products = new ArrayList<>();
 
     @OneToMany(mappedBy = "store",cascade = CascadeType.ALL)
-    private List<Receita> merchandise = new ArrayList<>();
+    private List<Revenue> revenues = new ArrayList<>();
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private List<Pedido> order = new ArrayList<>();
-
+    private List<Order> order = new ArrayList<>();
 }
