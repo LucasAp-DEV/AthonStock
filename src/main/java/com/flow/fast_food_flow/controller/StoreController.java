@@ -1,13 +1,9 @@
 package com.flow.fast_food_flow.controller;
 
 import com.flow.fast_food_flow.domain.store.RegisterStoreDTO;
-import com.flow.fast_food_flow.domain.store.Store;
 import com.flow.fast_food_flow.service.StoreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,7 +13,12 @@ public class StoreController {
     private final StoreService storeService;
 
     @PostMapping("/register")
-    public void register(@RequestBody Store data) {
+    public void register(@RequestBody RegisterStoreDTO data) {
         storeService.registerStore(data);
+    }
+
+    @PutMapping("/update/{id}")
+    public void update(@PathVariable(value = "id")Long id, @RequestBody RegisterStoreDTO data) {
+        storeService.updateStore(id, data);
     }
 }

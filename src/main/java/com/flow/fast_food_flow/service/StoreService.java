@@ -19,15 +19,29 @@ public class StoreService {
 
     public final PersonRepository personRepository;
 
-    public void registerStore(Store data) {
-        validatePersonId(data.getPerson().getId());
-        returnPersonId(data.getPerson().getId());
-        returnCNPJStore(data.getCnpj());
+    public void registerStore(RegisterStoreDTO data) {
+        validatePersonId(data.person().getId());
+        returnPersonId(data.person().getId());
+        returnCNPJStore(data.cnpj());
         validateCredentials(data);
         try {
-            Store store = new Store(data.getName(), data.getAddress(), data.getCnpj(), data.getPerson());
+            Store store = new Store(data.name(), data.address(), data.cnpj(),data.status(), data.person());
             storeRepository.save(store);
         }catch (Exception e) {throw new CredentialsException("Nao foi possivel realizar o cadastro.");}
+    }
+
+    public void updateStore(Long id, RegisterStoreDTO data) {
+        validatePersonId(data.person().getId());
+        validateCredentials(data);
+        returnPersonId(data.person().getId());
+        var storeEntity = returnIdStore(id);
+        try {
+            storeEntity.setName(data.name());
+            storeEntity.setAddress(data.address());
+            storeEntity.setCnpj(data.cnpj());
+            storeEntity.setStatus(data.status());
+            storeRepository.save(storeEntity);
+        } catch (Exception e) {throw new CredentialsException("Nao foi possivel atualizar o Store pois ");}
     }
 
     public void returnCNPJStore(String data) {
@@ -39,11 +53,16 @@ public class StoreService {
         personRepository.findById(data).orElseThrow(() -> new FindByIdException("Usuario não encontrado"));
     }
 
-    private void validateCredentials(Store data) {
-        validateField(data.getName(), "Nome");
-        validateField(data.getCnpj(), "CNPJ");
-        validateField(data.getAddress(), "Endereço");
+    public Store returnIdStore(Long id) {
+        return storeRepository.findById(id).orElseThrow(() -> new FindByIdException("Store não encontrado"));
     }
+
+    private void validateCredentials(RegisterStoreDTO data) {
+        validateField(data.name(), "Nome");
+        validateField(data.cnpj(), "CNPJ");
+        validateField(data.address(), "Endereço");
+    }
+
     private void validateField(String value, String fieldName) {
         if (Objects.isNull(value) || value.isBlank()) {throw new CredentialsException("Necessario informar " + fieldName);}
     }

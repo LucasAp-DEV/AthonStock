@@ -1,5 +1,7 @@
 package com.flow.fast_food_flow.domain.store;
 
+import com.flow.fast_food_flow.domain.excessoes.CredentialsException;
+import com.flow.fast_food_flow.domain.person.UpdatePersonDTO;
 import com.flow.fast_food_flow.domain.receita.Revenue;
 import com.flow.fast_food_flow.domain.pedido.Order;
 import com.flow.fast_food_flow.domain.person.Person;
@@ -9,6 +11,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Setter
 @Getter
@@ -21,12 +24,14 @@ public class Store {
     private String name;
     private String address;
     private String cnpj;
+    private Boolean status;
 
-    public Store(String name, String address, String cnpj, Person userId) {
+    public Store(String name, String address, String cnpj,Boolean status, Person person) {
         this.name = name;
         this.address = address;
         this.cnpj = cnpj;
-        this.person = userId;
+        this.status = status;
+        this.person = person;
     }
 
     @ManyToOne
@@ -41,4 +46,5 @@ public class Store {
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Order> order = new ArrayList<>();
+
 }
