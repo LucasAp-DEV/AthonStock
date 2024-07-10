@@ -13,8 +13,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int quantity;
-    private float peso;
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
