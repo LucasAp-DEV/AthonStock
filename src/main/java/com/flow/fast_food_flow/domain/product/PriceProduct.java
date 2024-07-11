@@ -21,4 +21,10 @@ public class PriceProduct {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
+    public PriceProduct(float price, Product product) {
+        this.price = price;
+        this.date = LocalDate.now();
+        this.product = product;
+    }
+
 }

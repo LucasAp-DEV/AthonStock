@@ -91,7 +91,7 @@ public class StoreService {
     private void validateField(String value, String fieldName) {
         if (Objects.isNull(value) || value.isBlank()) {throw new CredentialsException("Necessario informar " + fieldName);}
     }
-    private void validatePersonId(Long data) {
-        if (Objects.isNull(data)) {throw new CredentialsException("Necessario informar um ID de pessoa");}
+    private void validatePersonId(Long id) {
+        if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar um ID de pessoa");}
     }
 }
