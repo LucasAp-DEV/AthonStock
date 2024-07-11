@@ -2,6 +2,7 @@ package com.flow.fast_food_flow.service;
 
 import com.flow.fast_food_flow.domain.excessoes.CredentialsException;
 import com.flow.fast_food_flow.domain.excessoes.FindByIdException;
+import com.flow.fast_food_flow.domain.person.Person;
 import com.flow.fast_food_flow.domain.store.RegisterStoreDTO;
 import com.flow.fast_food_flow.domain.store.ResponseListStoreDTO;
 import com.flow.fast_food_flow.domain.store.Store;
@@ -23,20 +24,20 @@ public class StoreService {
     public final PersonRepository personRepository;
 
     public void registerStore(RegisterStoreDTO data) {
-        validatePersonId(data.person().getId());
-        returnPersonId(data.person().getId());
+        validatePersonId(data.personId());
+        var person = returnPersonId(data.personId());
         returnCNPJStore(data.cnpj());
         validateCredentials(data);
         try {
-            Store store = new Store(data.name(), data.address(), data.cnpj(),data.status(), data.person());
+            Store store = new Store(data.name(), data.address(), data.cnpj(),data.status(), person);
             storeRepository.save(store);
         }catch (Exception e) {throw new CredentialsException("Nao foi possivel realizar o cadastro.");}
     }
 
     public void updateStore(Long id, RegisterStoreDTO data) {
-        validatePersonId(data.person().getId());
+        validatePersonId(data.personId());
         validateCredentials(data);
-        returnPersonId(data.person().getId());
+        returnPersonId(data.personId());
         var storeEntity = returnIdStore(id);
         try {
             storeEntity.setName(data.name());
@@ -74,8 +75,8 @@ public class StoreService {
         if (store != null) throw new CredentialsException("Já existe um cadastro com este CNPJ");
     }
 
-    public void returnPersonId(Long data) {
-        personRepository.findById(data).orElseThrow(() -> new FindByIdException("Usuario não encontrado"));
+    public Person returnPersonId(Long data) {
+        return personRepository.findById(data).orElseThrow(() -> new FindByIdException("Usuario não encontrado"));
     }
 
     public Store returnIdStore(Long id) {

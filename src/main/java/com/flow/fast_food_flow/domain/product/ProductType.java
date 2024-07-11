@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ProductType {
-    KG("kg"),
-    UN("un");
+    KG("KG"),
+    UN("UN");
 
     private final String value;
 }
