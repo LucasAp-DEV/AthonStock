@@ -1,4 +1,4 @@
-package com.system.casaroto.domain.pedido;
+package com.system.casaroto.domain.contrato;
 
 import com.system.casaroto.domain.store.Store;
 import jakarta.persistence.*;
@@ -24,7 +24,7 @@ public class Contrato {
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL)
     private List<ContratoItens> contratoItens = new ArrayList<>();
 
 }

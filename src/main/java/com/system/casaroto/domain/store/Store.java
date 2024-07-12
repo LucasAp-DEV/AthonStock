@@ -1,6 +1,6 @@
 package com.system.casaroto.domain.store;
 
-import com.system.casaroto.domain.pedido.Contrato;
+import com.system.casaroto.domain.contrato.Contrato;
 import com.system.casaroto.domain.person.Person;
 import com.system.casaroto.domain.product.Product;
 import jakarta.persistence.*;
