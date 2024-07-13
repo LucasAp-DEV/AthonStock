@@ -15,16 +15,18 @@ public class PriceProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private float price;
+    private float priceSale;
     private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    public PriceProduct(float price, Product product) {
+    public PriceProduct(float price,float priceSale, Product product) {
         this.price = price;
         this.date = LocalDate.now();
         this.product = product;
+        this.priceSale = priceSale;
     }
 
 }

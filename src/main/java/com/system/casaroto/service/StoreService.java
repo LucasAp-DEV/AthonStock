@@ -39,13 +39,11 @@ public class StoreService {
         validateCredentials(data);
         returnPersonId(data.personId());
         var storeEntity = returnIdStore(id);
-        try {
             storeEntity.setName(data.name());
             storeEntity.setAddress(data.address());
             storeEntity.setCnpj(data.cnpj());
             storeEntity.setStatus(data.status());
             storeRepository.save(storeEntity);
-        } catch (Exception e) {throw new CredentialsException("Nao foi possivel atualizar o Store pois ");}
     }
 
     public List<ResponseListStoreDTO> returnListPersonstore(Long id) {
@@ -70,16 +68,16 @@ public class StoreService {
         }
     }
 
-    public void returnCNPJStore(String data) {
+    private void returnCNPJStore(String data) {
         var store =  storeRepository.findByCnpj(data);
         if (store != null) throw new CredentialsException("Já existe um cadastro com este CNPJ");
     }
 
-    public Person returnPersonId(Long data) {
+    private Person returnPersonId(Long data) {
         return personRepository.findById(data).orElseThrow(() -> new FindByIdException("Usuario não encontrado"));
     }
 
-    public Store returnIdStore(Long id) {
+    private Store returnIdStore(Long id) {
         return storeRepository.findById(id).orElseThrow(() -> new FindByIdException("Store não encontrado"));
     }
 
