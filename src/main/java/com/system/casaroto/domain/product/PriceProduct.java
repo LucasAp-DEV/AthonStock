@@ -17,6 +17,7 @@ public class PriceProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Float price;
+    private Float lucro;
     private Float priceSale;
     private LocalDate date;
 
@@ -24,11 +25,11 @@ public class PriceProduct {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    public PriceProduct(Float price,Float priceSale, Product product) {
+    public PriceProduct(Float price, Float lucro, Product product) {
         this.price = price;
         this.date = LocalDate.now();
         this.product = product;
-        this.priceSale = priceSale;
+        this.lucro = lucro;
+        this.priceSale = price * (1 + (lucro / 100));
     }
-
 }

@@ -46,10 +46,12 @@ public class Product {
     public void updateProduct(UpdateProduct data){
         validateField(data.name(), "o nome do produto");
         validateField(data.marca(), "a marca do produto");
+        validateField(data.code(), "o código do produto");
         validadestatus(data.status(), "o status do produto");
         this.name = data.name();
         this.marca = data.marca();
         this.status = data.status();
+        this.code = data.code();
     }
 
 }
