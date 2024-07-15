@@ -20,15 +20,17 @@ public class Product {
     private String marca;
     private Integer quantity;
     private Boolean status;
+    private String code;
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;
 
-    public Product(String name, Store store,Integer quantity, String marca) {
+    public Product(String name, Store store,Integer quantity, String marca, String code) {
         this.name = name;
         this.store = store;
         this.marca = marca;
+        this.code = code;
         this.quantity = quantity;
         this.status = true;
     }

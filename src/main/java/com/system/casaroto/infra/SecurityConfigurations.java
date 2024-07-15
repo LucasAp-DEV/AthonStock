@@ -38,6 +38,8 @@ public class SecurityConfigurations {
 
                         .requestMatchers(HttpMethod.POST, "/product/register").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/product/update/{id}").permitAll()
+
+                        .requestMatchers(HttpMethod.PUT, "/product/update/price/{id}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
