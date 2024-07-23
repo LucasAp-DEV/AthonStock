@@ -1,10 +1,7 @@
 package com.system.athon_stock.controller;
 
+import com.system.athon_stock.domain.person.*;
 import com.system.athon_stock.service.PersonService;
-import com.system.athon_stock.domain.person.AuthenticationDTO;
-import com.system.athon_stock.domain.person.RegisterPersonDTO;
-import com.system.athon_stock.domain.person.ResponsePersonDTO;
-import com.system.athon_stock.domain.person.UpdatePersonDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +24,7 @@ public class PersonController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginPerson(@RequestBody AuthenticationDTO data) {
+    public ResponseEntity<LoginResponseDTO> loginPerson(@RequestBody AuthenticationDTO data) {
         return personService.loginPerson(data);
     }
 

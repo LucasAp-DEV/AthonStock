@@ -41,6 +41,8 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.GET, "/product/person/all/{id}").permitAll()
 
                         .requestMatchers(HttpMethod.PUT, "/product/update/price/{id}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/admin/unblock-user").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/admin/unblock-user").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

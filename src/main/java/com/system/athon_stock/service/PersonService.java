@@ -26,22 +26,28 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
+    private final LoginAttemptService loginAttemptService;
 
     public ResponsePersonDTO returnPersonId(Long id) {
         var personEntity = returnId(id);
         return responseBuilderDTO(personEntity);
     }
 
-    public ResponseEntity<?> loginPerson(AuthenticationDTO data) {
+    public ResponseEntity<LoginResponseDTO> loginPerson(AuthenticationDTO data) {
         validateAutentication(data);
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         try {
+            if (loginAttemptService.isBlocked(data.login())) {
+                throw new CredentialsException("Usuario bloqueado devido a multiplas tentativas falhas de login");
+            }
             if (returnLogin(data.login()) == null)
                 throw new CredentialsException("Usuario nao existe no sistema");
             var authenticate = this.authenticationManager.authenticate(usernamePassword);
+            loginAttemptService.loginSucceeded(data.login());
             var token = tokenService.generateToken((Person) authenticate.getPrincipal());
             return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
         }catch (BadCredentialsException e) {
+            loginAttemptService.loginFailed(data.login());
             throw new CredentialsException("Credenciais Invalidas");
         }
     }
