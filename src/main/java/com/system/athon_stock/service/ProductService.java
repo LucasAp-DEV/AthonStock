@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class ProductService {
 
     private final ProductRepository productRepository;
-
     private final PriceProductRepository priceProductRepository;
     private final PersonRepository personRepository;
 
@@ -33,18 +33,35 @@ public class ProductService {
         priceProductRepository.save(priceProduct);
     }
 
-    public void updatePriceProduct(Long id, UpdatePriceProduct data){
-        var product = returnProductId(id);
-        validatePriceProduct(data);
-        PriceProduct priceProduct = new PriceProduct(data.price(), data.lucro(), product);
-        priceProductRepository.save(priceProduct);
-    }
+//    public void updatePriceProduct(Long id, UpdatePriceProduct data){
+//        var product = returnProductId(id);
+//        validatePriceProduct(data);
+//        PriceProduct priceProduct = new PriceProduct(data.price(), data.lucro(), product);
+//        priceProductRepository.save(priceProduct);
+//    }
 
-    public void updateProduct(Long id, UpdateProduct data){
-        returnProductCode(data.code());
-        var product = returnProductId(id);
-            product.updateProduct(data);
-            productRepository.save(product);
+    public void updateProduct(Long id, UpdateProduct product){
+        returnProductCode(product.code());
+        var product1 = returnProductId(id);
+            product1.updateProduct(product);
+            productRepository.save(product1);
+
+        validatePriceProduct(product);
+        PriceProduct newPriceProduct = new PriceProduct(product.price(), product.lucro(), product1);
+        var existingPriceProductOptional = returnPriceProduct(id);
+
+        if (existingPriceProductOptional.isPresent()) {
+            PriceProduct existingPriceProduct = existingPriceProductOptional.get();
+            double tolerance = 0.0001; //COLOCA UMA MARGEN DE AUTERAÇÃO
+            boolean priceChanged = Math.abs(newPriceProduct.getPrice() - existingPriceProduct.getPrice()) > tolerance; //FAZ UMA SUBTRAÇÃO DOS VALORES E VERIFICA SE HÁ DIFERENÇA
+            boolean lucroChanged = Math.abs(newPriceProduct.getLucro() - existingPriceProduct.getLucro()) > tolerance;
+
+            if (priceChanged || lucroChanged) {
+                priceProductRepository.save(newPriceProduct);
+            }
+        } else {
+            priceProductRepository.save(newPriceProduct);
+        }
     }
 
     public List<ReturnProduct> returnProductAll(Long id){
@@ -73,6 +90,11 @@ public class ProductService {
         return personRepository.findById(id).orElseThrow(() -> new FindByIdException("Pessoa não encontrada"));
     }
 
+    private Optional<PriceProduct> returnPriceProduct(Long id){
+        if (Objects.isNull(id)) {throw new CredentialsException("Necessario inserir as credenciais de Preço (ID)");}
+        return priceProductRepository.findFirstByProduct_IdOrderByDateDesc(id);
+    }
+
     private void validateRegisterProduct(RegisterProductDTO data) {
         validateField(data.name(), "o nome do produto");
         validateField(data.marca(), "a marca do produto");
@@ -80,7 +102,7 @@ public class ProductService {
         validateNumber(data.lucro(), "o valor da venda do produto");
     }
 
-    private void validatePriceProduct(UpdatePriceProduct data) {
+    private void validatePriceProduct(UpdateProduct data) {
         validateNumber(data.price(), "o valor do produto");
         validateNumber(data.lucro(), "o valor da venda do produto");
     }
@@ -95,6 +117,7 @@ public class ProductService {
 
     private ReturnProduct converte(Product product) {
         return ReturnProduct.builder()
+                .id(product.getId())
                 .name(product.getName())
                 .marca(product.getMarca())
                 .quantity(product.getQuantity())

@@ -20,14 +20,14 @@ public class ProductControll {
     }
 
     @PutMapping("/update/{id}")
-    public void updateProduct(@PathVariable(value = "id")Long id, @RequestBody UpdateProduct data){
-        productService.updateProduct(id, data);
+    public void updateProduct(@PathVariable(value = "id")Long id, @RequestBody UpdateProduct product){
+        productService.updateProduct(id, product);
     }
 
-    @PutMapping("/update/price/{id}")
-    public void updatePrice(@PathVariable(value = "id")Long id, @RequestBody UpdatePriceProduct data){
-        productService.updatePriceProduct(id, data);
-    }
+//    @PutMapping("/update/price/{id}")
+//    public void updatePrice(@PathVariable(value = "id")Long id, @RequestBody UpdatePriceProduct data){
+//        productService.updatePriceProduct(id, data);
+//    }
 
     @GetMapping("/person/all/{id}")
     public List<ReturnProduct> getAllProduct(@PathVariable(value = "id")Long id){
