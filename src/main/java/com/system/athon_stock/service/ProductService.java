@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -41,7 +42,7 @@ public class ProductService {
 //    }
 
     public void updateProduct(Long id, UpdateProduct product){
-        returnProductCode(product.code());
+        validateUniqueProductCode(product.code(), id);
         var product1 = returnProductId(id);
             product1.updateProduct(product);
             productRepository.save(product1);
@@ -64,12 +65,14 @@ public class ProductService {
         }
     }
 
-    public List<ReturnProduct> returnProductAll(Long id){
+    public List<ReturnProduct> returnProductAll(Long id) {
         returnPerson(id);
         List<Product> productList = productRepository.findAll();
         List<ReturnProduct> returnProducts = new ArrayList<>();
-        for(Product product : productList){
-            returnProducts.add(converte(product));
+
+        for(Product product : productList) {
+            PriceProduct priceProduct = obterPriceProductAssociado(product);
+            returnProducts.add(converte(product, priceProduct));
         }
         return returnProducts;
     }
@@ -84,6 +87,14 @@ public class ProductService {
         if (productCode.isPresent())
             throw new CredentialsException("Código do produto ja esta em uso");
     }
+
+    private void validateUniqueProductCode(String code, Long id) {
+        var productCode = productRepository.findByCode(code);
+        if (productCode.isPresent() && !productCode.get().getId().equals(id)) {
+            throw new CredentialsException("Código do produto já está em uso");
+        }
+    }
+
 
     private Person returnPerson(Long id){
         if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar o ID da pessoa");}
@@ -115,7 +126,7 @@ public class ProductService {
         if (Objects.isNull(price)) {throw new CredentialsException("Necessario informar " + description);}
     }
 
-    private ReturnProduct converte(Product product) {
+    private ReturnProduct converte(Product product, PriceProduct priceProduct) {
         return ReturnProduct.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -123,6 +134,17 @@ public class ProductService {
                 .quantity(product.getQuantity())
                 .status(product.getStatus())
                 .code(product.getCode())
+                .price(priceProduct != null ? priceProduct.getPrice() : null)
+                .lucro(priceProduct != null ? priceProduct.getLucro() : null)
+                .priceSale(priceProduct != null ? priceProduct.getPriceSale() : null)
                 .build();
+    }
+
+    private PriceProduct obterPriceProductAssociado(Product product) {
+        if (product == null) {
+            return null;
+        }
+        var existingPriceProductOptional = returnPriceProduct(product.getId());
+        return existingPriceProductOptional.orElse(null);
     }
 }
