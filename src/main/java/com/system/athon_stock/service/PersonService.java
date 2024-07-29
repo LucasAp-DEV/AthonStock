@@ -87,7 +87,6 @@ public class PersonService {
     public ResponsePersonDTO responseBuilderDTO(Person person) {
         ResponsePersonDTO.ResponsePersonDTOBuilder builder = ResponsePersonDTO.builder()
                 .name(person.getName())
-                .role(person.getRole())
                 .login(person.getLogin())
                 .email(person.getEmail())
                 .phone(person.getPhone());
