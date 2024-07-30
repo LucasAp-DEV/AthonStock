@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 @Getter
 @Setter
@@ -84,10 +85,19 @@ public class Person implements UserDetails {
         return true;
     }
 
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{2}\\d{8,9}$");
+
 
     private void validatePerson(UpdatePersonDTO person) {
         if (Objects.isNull(person.name()) || person.name().isBlank())
-            throw new CredentialsException("É necessario informar um nome");
+            throw new CredentialsException("é necessario informar um Nome");
+        if (!Objects.equals(person.email(), "") && !EMAIL_PATTERN.matcher(person.email()).matches()) {
+            throw new CredentialsException("é necessario informar um Email válido");
+        }
+        if (!Objects.equals(person.phone(), "") && !PHONE_PATTERN.matcher(person.phone()).matches()) {
+            throw new CredentialsException("é necessario informar um Telefone válido");
+        }
     }
 
     public void bind (UpdatePersonDTO person) {
