@@ -110,12 +110,12 @@ public class ProductService {
         validateField(data.name(), "o nome do produto");
         validateField(data.marca(), "a marca do produto");
         validateNumber(data.price(), "o valor do produto");
-        validateNumber(data.lucro(), "o valor da venda do produto");
+        validateNumber(data.lucro(), "a porcentagem de lucro do produto");
     }
 
     private void validatePriceProduct(UpdateProduct data) {
         validateNumber(data.price(), "o valor do produto");
-        validateNumber(data.lucro(), "o valor da venda do produto");
+        validateNumber(data.lucro(), "a porcentagem de lucro do produto");
     }
 
     private void validateField(String value, String description) {
@@ -123,8 +123,9 @@ public class ProductService {
     }
 
     private void validateNumber(Float price, String description) {
-        if (Objects.isNull(price)) {throw new CredentialsException("Necessario informar " + description);}
+        if (Objects.isNull(price) || price <= 0) {throw new CredentialsException("Necessario informar " + description);}
     }
+
 
     private ReturnProduct converte(Product product, PriceProduct priceProduct) {
         return ReturnProduct.builder()
