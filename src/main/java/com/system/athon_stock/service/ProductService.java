@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -109,6 +108,7 @@ public class ProductService {
     private void validateRegisterProduct(RegisterProductDTO data) {
         validateField(data.name(), "o nome do produto");
         validateField(data.marca(), "a marca do produto");
+        validateField(data.code(), "o código do produto");
         validateNumber(data.price(), "o valor do produto");
         validateNumber(data.lucro(), "a porcentagem de lucro do produto");
     }
@@ -123,7 +123,7 @@ public class ProductService {
     }
 
     private void validateNumber(Float price, String description) {
-        if (Objects.isNull(price) || price <= 0) {throw new CredentialsException("Necessario informar " + description);}
+        if (Objects.isNull(price) || price <= 0 ) {throw new CredentialsException("Necessario informar " + description);}
     }
 
 
