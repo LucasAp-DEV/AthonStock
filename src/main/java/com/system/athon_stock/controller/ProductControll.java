@@ -24,10 +24,10 @@ public class ProductControll {
         productService.updateProduct(id, product);
     }
 
-//    @PutMapping("/update/price/{id}")
-//    public void updatePrice(@PathVariable(value = "id")Long id, @RequestBody UpdatePriceProduct data){
-//        productService.updatePriceProduct(id, data);
-//    }
+    @PostMapping("/update/stock/{id}")
+    public void updatePrice(@PathVariable(value = "id")Long id, @RequestBody UpdateStockProduct data){
+        productService.updateStockProduct(id, data);
+    }
 
     @GetMapping("/person/all/{id}")
     public List<ReturnProduct> getAllProduct(@PathVariable(value = "id")Long id){

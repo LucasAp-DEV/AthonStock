@@ -28,22 +28,26 @@ public class SecurityConfigurations {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/person/{id}").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/person/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/person/register").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/person/{id}").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/person/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/person/register").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/store/register").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/store/update/{id}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/store/person/{id}").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/store/register").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/store/update/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/store/person/{id}").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/product/register").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/product/update/{id}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/product/person/all/{id}").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/product/register").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/product/update/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/product/person/all/{id}").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/product/update/price/{id}").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/product/update/stock/{id}").permitAll()
 
-                        .requestMatchers(HttpMethod.PUT, "/product/update/price/{id}").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/admin/unblock-user").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/admin/unblock-user").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                                .requestMatchers(HttpMethod.GET, "/contrato/user/{id}").permitAll()
+
+                                .requestMatchers(HttpMethod.POST, "/admin/unblock-user").permitAll()
+//                                .requestMatchers(HttpMethod.POST, "/admin/unblock-user").hasRole("ADMIN")
+
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

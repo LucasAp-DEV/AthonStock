@@ -33,13 +33,6 @@ public class ProductService {
         priceProductRepository.save(priceProduct);
     }
 
-//    public void updatePriceProduct(Long id, UpdatePriceProduct data){
-//        var product = returnProductId(id);
-//        validatePriceProduct(data);
-//        PriceProduct priceProduct = new PriceProduct(data.price(), data.lucro(), product);
-//        priceProductRepository.save(priceProduct);
-//    }
-
     public void updateProduct(Long id, UpdateProduct product){
         validateUniqueProductCode(product.code(), id);
         var product1 = returnProductId(id);
@@ -62,6 +55,14 @@ public class ProductService {
         } else {
             priceProductRepository.save(newPriceProduct);
         }
+    }
+
+    public void updateStockProduct(Long id,UpdateStockProduct updateStockProduct){
+        var person = returnPerson(id);
+        Product product = returnProductId(updateStockProduct.id());
+        validatePersonProduct(person.getId(), product.getPerson().getId());
+        product.setQuantity(product.getQuantity() + updateStockProduct.quantity());
+        productRepository.save(product);
     }
 
     public List<ReturnProduct> returnProductAll(Long id) {
@@ -94,7 +95,6 @@ public class ProductService {
         }
     }
 
-
     private Person returnPerson(Long id){
         if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar o ID da pessoa");}
         return personRepository.findById(id).orElseThrow(() -> new FindByIdException("Pessoa não encontrada"));
@@ -126,6 +126,11 @@ public class ProductService {
         if (Objects.isNull(price) || price <= 0 ) {throw new CredentialsException("Necessario informar " + description);}
     }
 
+    private void validatePersonProduct(Long personId, Long productId) {
+        if(!Objects.equals(personId, productId)) {
+            throw new CredentialsException("Este produto nao esta relacionado ao seu Usuario");
+        }
+    }
 
     private ReturnProduct converte(Product product, PriceProduct priceProduct) {
         return ReturnProduct.builder()
