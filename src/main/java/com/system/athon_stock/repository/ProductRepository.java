@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @NotNull
     Optional<Product> findById(Long id);
+
     @NotNull
     Optional<Product> findByCode(String name);
 
