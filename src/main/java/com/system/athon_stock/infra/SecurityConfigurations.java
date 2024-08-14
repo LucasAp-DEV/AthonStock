@@ -42,6 +42,7 @@ public class SecurityConfigurations {
                                 .requestMatchers(HttpMethod.PUT, "/product/update/price/{id}").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/product/update/stock/{id}").permitAll()
 
+                                .requestMatchers(HttpMethod.POST, "/contrato/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/contrato/user/{id}").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "/admin/unblock-user").permitAll()

@@ -4,6 +4,8 @@ import com.system.athon_stock.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Setter
 @Getter
 @RequiredArgsConstructor
@@ -18,8 +20,12 @@ public class ContratoItens {
     @JoinColumn(name = "contrato_id", referencedColumnName = "id")
     private Contrato contrato;
 
-    @ManyToOne
-    @JoinColumn(name = "produto_id", referencedColumnName = "id")
-    private Product produto;
+    @ManyToMany
+    @JoinTable(name = "contrato_itens_products", joinColumns = @JoinColumn(name = "contrato_itens_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> products;
 
+    public ContratoItens(List<Product> products, Contrato contrato) {
+        this.products = products;
+        this.contrato = contrato;
+    }
 }

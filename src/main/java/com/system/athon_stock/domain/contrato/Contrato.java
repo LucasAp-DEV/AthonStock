@@ -24,7 +24,10 @@ public class Contrato {
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
 
-    @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL)
-    private List<ContratoItens> contratoItens = new ArrayList<>();
-
+    public Contrato(String description, Float price, Person person) {
+        this.description = description;
+        this.price = price;
+        this.person = person;
+        this.date = LocalDate.now();
+    }
 }
