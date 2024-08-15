@@ -18,16 +18,28 @@ public class Contrato {
     private Long id;
     private String description;
     private LocalDate date;
-    private float price;
+    private Float labor;
+    private Double valueProducts;
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
 
-    public Contrato(String description, Float price, Person person) {
+    @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ContratoItens> contratoItens = new ArrayList<>();
+
+
+    public Contrato(String description, Float labor, Person person) {
         this.description = description;
-        this.price = price;
+        this.labor = labor;
         this.person = person;
         this.date = LocalDate.now();
+        this.valueProducts = 0.0;
+    }
+
+    public void calculateTotalValue() {
+        this.valueProducts = contratoItens.stream()
+                .mapToDouble(ContratoItens::getTotalValue)
+                .sum();
     }
 }

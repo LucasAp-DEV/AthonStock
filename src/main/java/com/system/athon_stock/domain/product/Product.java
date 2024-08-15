@@ -1,10 +1,12 @@
 package com.system.athon_stock.domain.product;
 
+import com.system.athon_stock.domain.contrato.ContratoItens;
 import com.system.athon_stock.domain.excessoes.CredentialsException;
 import com.system.athon_stock.domain.person.Person;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -25,6 +27,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person person;
+
+    @OneToMany(mappedBy = "product")
+    private List<ContratoItens> contratoItens;
 
     public Product(String name, Person person,Integer quantity, String marca, String code) {
         this.name = name;

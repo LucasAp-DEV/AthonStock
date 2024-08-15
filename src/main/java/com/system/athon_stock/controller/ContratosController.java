@@ -1,6 +1,7 @@
 package com.system.athon_stock.controller;
 
 import com.system.athon_stock.domain.contrato.Contrato;
+import com.system.athon_stock.domain.contrato.ContratoResponseDTO;
 import com.system.athon_stock.domain.contrato.RegisterContratoDTO;
 import com.system.athon_stock.service.ContratoService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class ContratosController {
     }
 
     @GetMapping("/user/{id}")
-    public List<Contrato> getAllContratoById(@PathVariable Long id) {
+    public List<ContratoResponseDTO> getAllContratoById(@PathVariable Long id) {
         return contratosService.findAllContratos(id);
     }
 }

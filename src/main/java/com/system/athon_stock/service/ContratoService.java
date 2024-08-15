@@ -2,19 +2,19 @@ package com.system.athon_stock.service;
 
 import com.system.athon_stock.domain.contrato.Contrato;
 import com.system.athon_stock.domain.contrato.ContratoItens;
+import com.system.athon_stock.domain.contrato.ContratoResponseDTO;
 import com.system.athon_stock.domain.contrato.RegisterContratoDTO;
 import com.system.athon_stock.domain.excessoes.CredentialsException;
 import com.system.athon_stock.domain.excessoes.FindByIdException;
 import com.system.athon_stock.domain.excessoes.ReturnNullException;
 import com.system.athon_stock.domain.person.Person;
+import com.system.athon_stock.domain.product.PriceProduct;
 import com.system.athon_stock.domain.product.Product;
-import com.system.athon_stock.repository.ContratoItensRepository;
-import com.system.athon_stock.repository.ContratoRepository;
-import com.system.athon_stock.repository.PersonRepository;
-import com.system.athon_stock.repository.ProductRepository;
+import com.system.athon_stock.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,22 +26,32 @@ public class ContratoService {
     private final PersonRepository personRepository;
     private final ProductRepository productRepository;
     private final ContratoItensRepository contratoItensRepository;
+    private final PriceProductRepository priceProductRepository;
 
-    public List<Contrato> findAllContratos(Long id) {
-        var contrato = contratoRepository.findByPerson_id(id);
-        if(contrato.isEmpty()){
-            throw new ReturnNullException("Você não possui contratos no momento");
+    public List<ContratoResponseDTO> findAllContratos(Long id) {
+        returnPerson(id);
+        List<Contrato> contratos = contratoRepository.findByPerson_id(id);
+        List<ContratoResponseDTO> contratoResponseDTOs = new ArrayList<>();
+
+        for (Contrato contrato : contratos) {
+            contratoResponseDTOs.add(converte(contrato));
         }
-        return contrato;
+        return contratoResponseDTOs;
     }
 
     public void registerContrato(RegisterContratoDTO contratoDTO) {
         var person = returnPerson(contratoDTO.personId());
         var products = returnListProducts(contratoDTO.productId());
-        Contrato contrato = new Contrato(contratoDTO.description(), contratoDTO.price(), person);
+        Contrato contrato = new Contrato(contratoDTO.description(), contratoDTO.labor(), person);
         contratoRepository.save(contrato);
-        ContratoItens contratoItens = new ContratoItens(products, contrato);
-        contratoItensRepository.save(contratoItens);
+        for (Product product : products) {
+            PriceProduct priceProduct = returnPriceProduct(product.getId());
+            ContratoItens contratoItens = new ContratoItens(product, contrato, priceProduct);
+            contratoItensRepository.save(contratoItens);
+            contrato.getContratoItens().add(contratoItens);
+        }
+        contrato.calculateTotalValue();
+        contratoRepository.save(contrato);
     }
 
     private Person returnPerson(Long id){
@@ -56,4 +66,17 @@ public class ContratoService {
         }
         return products;
     }
+
+    private PriceProduct returnPriceProduct(Long productId) {
+        return priceProductRepository.findByProductId(productId).orElseThrow(() -> new FindByIdException("Preço do produto não encontrado para o ID: " + productId));
+    }
+
+    private ContratoResponseDTO converte(Contrato contrato) {
+        return ContratoResponseDTO.builder()
+                .id(contrato.getId())
+                .date(contrato.getDate())
+                .description(contrato.getDescription())
+                .build();
+    }
+
 }
