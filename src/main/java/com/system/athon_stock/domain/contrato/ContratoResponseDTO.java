@@ -7,5 +7,6 @@ import java.time.LocalDate;
 @Builder
 public record ContratoResponseDTO(Long id,
                                   String description,
-                                  LocalDate date) {
+                                  LocalDate date,
+                                  String nameClient) {
 }

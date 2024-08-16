@@ -50,3 +50,72 @@ VALUES
     ('2024-07-24', 55, 20, 25, 19),
     ('2024-07-24', 100, 35, 45, 20);
 
+
+INSERT INTO contrato (description, date, labor, value_products, name_client, person_id)
+VALUES
+    ('Contrato de instalação de faróis', '2024-07-24', 150.00, 32.00, 'João Silva', 1),
+    ('Contrato de substituição de lâmpadas', '2024-07-24', 75.00, 8.00, 'Maria Oliveira', 1),
+    ('Contrato de troca de pneus', '2024-07-24', 200.00, 75.00, 'Carlos Souza', 1),
+    ('Contrato de revisão completa', '2024-07-24', 300.00, 70.00, 'Ana Paula', 1),
+    ('Contrato de troca de óleo', '2024-07-24', 50.00, 15.00, 'Pedro Almeida', 1),
+    ('Contrato de revisão de freios', '2024-07-24', 100.00, 25.00, 'Lucas Fernandes', 1),
+    ('Contrato de troca de amortecedores', '2024-07-24', 250.00, 50.00, 'Paula Lima', 1),
+    ('Contrato de revisão elétrica', '2024-07-24', 175.00, 30.00, 'Bruno Rocha', 1),
+    ('Contrato de instalação de retrovisores', '2024-07-24', 90.00, 20.00, 'Fernanda Souza', 1),
+    ('Contrato de revisão geral', '2024-07-24', 350.00, 40.00, 'Rafael Alves', 1),
+    ('Contrato de troca de correias', '2024-07-24', 150.00, 30.00, 'Carla Pereira', 1),
+    ('Contrato de substituição de baterias', '2024-07-24', 120.00, 70.00, 'Renato Castro', 1),
+    ('Contrato de ajuste de suspensão', '2024-07-24', 220.00, 50.00, 'Gabriela Costa', 1),
+    ('Contrato de alinhamento e balanceamento', '2024-07-24', 180.00, 25.00, 'Marcelo Martins', 1),
+    ('Contrato de troca de filtros', '2024-07-24', 110.00, 18.00, 'Sofia Lopes', 1),
+    ('Contrato de revisão de motor', '2024-07-24', 280.00, 55.00, 'Ricardo Nunes', 1),
+    ('Contrato de troca de pastilhas de freio', '2024-07-24', 140.00, 25.00, 'Juliana Melo', 1),
+    ('Contrato de revisão de ar-condicionado', '2024-07-24', 130.00, 30.00, 'Leandro Vieira', 1),
+    ('Contrato de troca de palhetas', '2024-07-24', 60.00, 15.00, 'Patrícia Dias', 1),
+    ('Contrato de instalação de bombas de combustível', '2024-07-24', 190.00, 45.00, 'Thiago Barros', 1),
+    ('Contrato de revisão de embreagem', '2024-07-24', 210.00, 50.00, 'Isabela Braga', 1),
+    ('Contrato de ajuste de volante', '2024-07-24', 95.00, 30.00, 'Fábio Ribeiro', 1),
+    ('Contrato de troca de alternador', '2024-07-24', 160.00, 55.00, 'André Gomes', 1),
+    ('Contrato de instalação de faróis de neblina', '2024-07-24', 180.00, 32.00, 'Bruna Santana', 1),
+    ('Contrato de revisão de direção', '2024-07-24', 230.00, 40.00, 'Aline Ramos', 1),
+    ('Contrato de substituição de lâmpadas de freio', '2024-07-24', 85.00, 15.00, 'Diego Moreira', 1),
+    ('Contrato de troca de filtros de cabine', '2024-07-24', 100.00, 25.00, 'Michele Borges', 1),
+    ('Contrato de revisão de injeção eletrônica', '2024-07-24', 200.00, 45.00, 'Roberto Lima', 1),
+    ('Contrato de troca de óleos e fluidos', '2024-07-24', 70.00, 15.00, 'Vitor Mendes', 1),
+    ('Contrato de revisão completa premium', '2024-07-24', 400.00, 75.00, 'Beatriz Carvalho', 1);
+
+INSERT INTO contrato_itens (total_value, contrato_id, product_id)
+VALUES
+    (32.00, 1, 1),
+    (8.00, 2, 2),
+    (75.00, 3, 3),
+    (70.00, 4, 4),
+    (15.00, 5, 5),
+    (25.00, 6, 9),
+    (50.00, 7, 13),
+    (30.00, 8, 17),
+    (20.00, 9, 14),
+    (40.00, 10, 15),
+    (30.00, 11, 18),
+    (70.00, 12, 4),
+    (50.00, 13, 13),
+    (25.00, 14, 12),
+    (18.00, 15, 8),
+    (55.00, 16, 17),
+    (25.00, 17, 12),
+    (30.00, 18, 19),
+    (15.00, 19, 10),
+    (45.00, 20, 11),
+    (50.00, 21, 13),
+    (30.00, 22, 14),
+    (55.00, 23, 17),
+    (32.00, 24, 1),
+    (40.00, 25, 15),
+    (15.00, 26, 10),
+    (25.00, 27, 19),
+    (45.00, 28, 11),
+    (15.00, 29, 5),
+    (75.00, 30, 3);
+
+
+

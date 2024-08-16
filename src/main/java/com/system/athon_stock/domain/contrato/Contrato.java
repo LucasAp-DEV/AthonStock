@@ -20,6 +20,7 @@ public class Contrato {
     private LocalDate date;
     private Float labor;
     private Double valueProducts;
+    private String nameClient;
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
@@ -29,12 +30,13 @@ public class Contrato {
     private List<ContratoItens> contratoItens = new ArrayList<>();
 
 
-    public Contrato(String description, Float labor, Person person) {
+    public Contrato(String description, Float labor, Person person, String nameClient) {
         this.description = description;
         this.labor = labor;
         this.person = person;
         this.date = LocalDate.now();
         this.valueProducts = 0.0;
+        this.nameClient = nameClient;
     }
 
     public void calculateTotalValue() {

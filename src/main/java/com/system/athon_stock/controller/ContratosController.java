@@ -1,6 +1,5 @@
 package com.system.athon_stock.controller;
 
-import com.system.athon_stock.domain.contrato.Contrato;
 import com.system.athon_stock.domain.contrato.ContratoResponseDTO;
 import com.system.athon_stock.domain.contrato.RegisterContratoDTO;
 import com.system.athon_stock.service.ContratoService;

@@ -36,13 +36,16 @@ public class ContratoService {
         for (Contrato contrato : contratos) {
             contratoResponseDTOs.add(converte(contrato));
         }
+        if(contratoResponseDTOs.isEmpty()){
+            throw new ReturnNullException("Voce nao possui contratos no momento");
+        }
         return contratoResponseDTOs;
     }
 
     public void registerContrato(RegisterContratoDTO contratoDTO) {
         var person = returnPerson(contratoDTO.personId());
         var products = returnListProducts(contratoDTO.productId());
-        Contrato contrato = new Contrato(contratoDTO.description(), contratoDTO.labor(), person);
+        Contrato contrato = new Contrato(contratoDTO.description(), contratoDTO.labor(), person, contratoDTO.nameClient());
         contratoRepository.save(contrato);
         for (Product product : products) {
             PriceProduct priceProduct = returnPriceProduct(product.getId());
@@ -76,6 +79,7 @@ public class ContratoService {
                 .id(contrato.getId())
                 .date(contrato.getDate())
                 .description(contrato.getDescription())
+                .nameClient(contrato.getNameClient())
                 .build();
     }
 
