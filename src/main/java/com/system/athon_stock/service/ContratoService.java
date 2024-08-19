@@ -1,9 +1,6 @@
 package com.system.athon_stock.service;
 
-import com.system.athon_stock.domain.contrato.Contrato;
-import com.system.athon_stock.domain.contrato.ContratoItens;
-import com.system.athon_stock.domain.contrato.ContratoResponseDTO;
-import com.system.athon_stock.domain.contrato.RegisterContratoDTO;
+import com.system.athon_stock.domain.contrato.*;
 import com.system.athon_stock.domain.excessoes.CredentialsException;
 import com.system.athon_stock.domain.excessoes.FindByIdException;
 import com.system.athon_stock.domain.excessoes.ReturnNullException;
@@ -44,17 +41,28 @@ public class ContratoService {
 
     public void registerContrato(RegisterContratoDTO contratoDTO) {
         var person = returnPerson(contratoDTO.personId());
-        var products = returnListProducts(contratoDTO.productId());
+
         Contrato contrato = new Contrato(contratoDTO.description(), contratoDTO.labor(), person, contratoDTO.nameClient());
         contratoRepository.save(contrato);
-        for (Product product : products) {
-            PriceProduct priceProduct = returnPriceProduct(product.getId());
-            ContratoItens contratoItens = new ContratoItens(product, contrato, priceProduct);
-            contratoItensRepository.save(contratoItens);
-            contrato.getContratoItens().add(contratoItens);
+
+        for (ProductListContrato productListContrato : contratoDTO.products()) {
+            var product1 = returnProductId(productListContrato.id());
+            PriceProduct priceProduct = returnPriceProduct(product1.getId());
+
+            for (int i = 0; i < productListContrato.quantity(); i++) {
+                ContratoItens contratoItens = new ContratoItens(product1, contrato, priceProduct);
+                contratoItensRepository.save(contratoItens);
+                contrato.getContratoItens().add(contratoItens);
+            }
         }
-        contrato.calculateTotalValue();
+
+        contrato.calculateTotalValueContrato();
         contratoRepository.save(contrato);
+    }
+
+    public Product returnProductId(Long id){
+        if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar o ID do produto");}
+        return productRepository.findById(id).orElseThrow(() -> new FindByIdException("Produto não encontrada"));
     }
 
     private Person returnPerson(Long id){

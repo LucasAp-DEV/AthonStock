@@ -84,7 +84,7 @@ VALUES
     ('Contrato de troca de óleos e fluidos', '2024-07-24', 70.00, 15.00, 'Vitor Mendes', 1),
     ('Contrato de revisão completa premium', '2024-07-24', 400.00, 75.00, 'Beatriz Carvalho', 1);
 
-INSERT INTO contrato_itens (total_value, contrato_id, product_id)
+INSERT INTO contrato_itens (value_product, contrato_id, product_id)
 VALUES
     (32.00, 1, 1),
     (8.00, 2, 2),

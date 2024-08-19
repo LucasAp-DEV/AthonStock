@@ -19,8 +19,9 @@ public class Contrato {
     private String description;
     private LocalDate date;
     private Float labor;
-    private Double valueProducts;
+    private Float valueProducts;
     private String nameClient;
+    private Float totalValueContrato;
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
@@ -35,13 +36,19 @@ public class Contrato {
         this.labor = labor;
         this.person = person;
         this.date = LocalDate.now();
-        this.valueProducts = 0.0;
+        this.valueProducts = 0.0F;
         this.nameClient = nameClient;
     }
 
-    public void calculateTotalValue() {
+    public Float calculateTotalValueProduct() {
         this.valueProducts = contratoItens.stream()
-                .mapToDouble(ContratoItens::getTotalValue)
-                .sum();
+                .map(ContratoItens::getValueProduct)
+                .reduce(0f, Float::sum);
+        return this.valueProducts;
+    }
+
+    public void calculateTotalValueContrato() {
+        Float totalProducts = calculateTotalValueProduct();
+        this.totalValueContrato = totalProducts + this.labor;
     }
 }
