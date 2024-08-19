@@ -49,6 +49,9 @@ public class ContratoService {
             var product1 = returnProductId(productListContrato.id());
             PriceProduct priceProduct = returnPriceProduct(product1.getId());
 
+            var venda =  -1 * productListContrato.quantity();
+            product1.setQuantity(product1.getQuantity() + venda);
+
             for (int i = 0; i < productListContrato.quantity(); i++) {
                 ContratoItens contratoItens = new ContratoItens(product1, contrato, priceProduct);
                 contratoItensRepository.save(contratoItens);
