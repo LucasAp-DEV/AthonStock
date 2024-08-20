@@ -17,6 +17,7 @@ public class ContratoItens {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Float valueProduct;
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "contrato_id", referencedColumnName = "id")
@@ -26,9 +27,10 @@ public class ContratoItens {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    public ContratoItens(Product product, Contrato contrato, PriceProduct priceProduct) {
+    public ContratoItens(Product product, Contrato contrato, PriceProduct priceProduct, Integer quantity) {
         this.product = product;
         this.contrato = contrato;
         this.valueProduct = priceProduct.getPriceSale();
+        this.quantity = quantity;
     }
 }

@@ -42,7 +42,7 @@ public class Contrato {
 
     public Float calculateTotalValueProduct() {
         this.valueProducts = contratoItens.stream()
-                .map(ContratoItens::getValueProduct)
+                .map(item -> item.getValueProduct() * item.getQuantity())
                 .reduce(0f, Float::sum);
         return this.valueProducts;
     }

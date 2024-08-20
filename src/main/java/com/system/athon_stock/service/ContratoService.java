@@ -33,7 +33,7 @@ public class ContratoService {
         for (Contrato contrato : contratos) {
             contratoResponseDTOs.add(converte(contrato));
         }
-        if(contratoResponseDTOs.isEmpty()){
+        if (contratoResponseDTOs.isEmpty()) {
             throw new ReturnNullException("Voce nao possui contratos no momento");
         }
         return contratoResponseDTOs;
@@ -49,37 +49,42 @@ public class ContratoService {
             var product1 = returnProductId(productListContrato.id());
             PriceProduct priceProduct = returnPriceProduct(product1.getId());
 
-            var venda =  -1 * productListContrato.quantity();
+            var venda = -1 * productListContrato.quantity();
+
+            if((product1.getQuantity() + venda) < 0) {
+                throw new ReturnNullException("Voce nao possue quantidade suficiente do produto: " + product1.getName()+": "+product1.getQuantity()+ " Unidades");}
+
             product1.setQuantity(product1.getQuantity() + venda);
 
-            for (int i = 0; i < productListContrato.quantity(); i++) {
-                ContratoItens contratoItens = new ContratoItens(product1, contrato, priceProduct);
-                contratoItensRepository.save(contratoItens);
-                contrato.getContratoItens().add(contratoItens);
-            }
+            ContratoItens contratoItens = new ContratoItens(product1, contrato, priceProduct, productListContrato.quantity());
+            contratoItensRepository.save(contratoItens);
+            contrato.getContratoItens().add(contratoItens);
         }
-
         contrato.calculateTotalValueContrato();
         contratoRepository.save(contrato);
     }
 
-    public Product returnProductId(Long id){
-        if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar o ID do produto");}
+    private Product returnProductId(Long id) {
+        if (Objects.isNull(id)) {
+            throw new CredentialsException("Necessario informar o ID do produto");
+        }
         return productRepository.findById(id).orElseThrow(() -> new FindByIdException("Produto não encontrada"));
     }
 
-    private Person returnPerson(Long id){
-        if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar o ID do usuario");}
+    private Person returnPerson(Long id) {
+        if (Objects.isNull(id)) {
+            throw new CredentialsException("Necessario informar o ID do usuario");
+        }
         return personRepository.findById(id).orElseThrow(() -> new FindByIdException("Usuario não encontrada"));
     }
 
-    private List<Product> returnListProducts(List<Long> productIds){
-        var products = productRepository.findAllByIdIn(productIds);
-        if (products.size() != productIds.size()) {
-            throw new FindByIdException("Um ou mais produtos não foram encontrados");
-        }
-        return products;
-    }
+//    private List<Product> returnListProducts(List<Long> productIds) {
+//        var products = productRepository.findAllByIdIn(productIds);
+//        if (products.size() != productIds.size()) {
+//            throw new FindByIdException("Um ou mais produtos não foram encontrados");
+//        }
+//        return products;
+//    }
 
     private PriceProduct returnPriceProduct(Long productId) {
         return priceProductRepository.findByProductId(productId).orElseThrow(() -> new FindByIdException("Preço do produto não encontrado para o ID: " + productId));
