@@ -1,5 +1,6 @@
 package com.system.athon_stock.domain.contrato;
 
+import com.system.athon_stock.domain.excessoes.CredentialsException;
 import com.system.athon_stock.domain.person.Person;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,6 +8,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Setter
 @Getter
@@ -51,4 +53,5 @@ public class Contrato {
         Float totalProducts = calculateTotalValueProduct();
         this.totalValueContrato = totalProducts + this.labor;
     }
+    
 }

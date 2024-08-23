@@ -9,11 +9,13 @@ import com.system.athon_stock.domain.product.PriceProduct;
 import com.system.athon_stock.domain.product.Product;
 import com.system.athon_stock.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -24,6 +26,7 @@ public class ContratoService {
     private final ProductRepository productRepository;
     private final ContratoItensRepository contratoItensRepository;
     private final PriceProductRepository priceProductRepository;
+    private final DefaultAuthenticationEventPublisher authenticationEventPublisher;
 
     public List<ContratoResponseDTO> findAllContratos(Long id) {
         returnPerson(id);
@@ -41,6 +44,7 @@ public class ContratoService {
 
     public void registerContrato(RegisterContratoDTO contratoDTO) {
         var person = returnPerson(contratoDTO.personId());
+        validateDTO(contratoDTO);
 
         Contrato contrato = new Contrato(contratoDTO.description(), contratoDTO.labor(), person, contratoDTO.nameClient());
         contratoRepository.save(contrato);
@@ -52,7 +56,8 @@ public class ContratoService {
             var venda = -1 * productListContrato.quantity();
 
             if((product1.getQuantity() + venda) < 0) {
-                throw new ReturnNullException("Voce nao possue quantidade suficiente do produto: " + product1.getName()+": "+product1.getQuantity()+ " Unidades");}
+                throw new ReturnNullException("Voce nao possue quantidade suficiente do produto: " + product1.getName()+": "+product1.getQuantity()+ " Unidades");
+            }
 
             product1.setQuantity(product1.getQuantity() + venda);
 
@@ -91,12 +96,42 @@ public class ContratoService {
     }
 
     private ContratoResponseDTO converte(Contrato contrato) {
+
+        List<ContratoItensDTO> contratoItens = contrato.getContratoItens().stream()
+                .map(this::converteContratoItens)
+                .collect(Collectors.toList());
+
         return ContratoResponseDTO.builder()
                 .id(contrato.getId())
                 .date(contrato.getDate())
                 .description(contrato.getDescription())
                 .nameClient(contrato.getNameClient())
+                .totalValueContrato(contrato.getTotalValueContrato())
+                .labor(contrato.getLabor())
+                .contratoItens(contratoItens)
                 .build();
+    }
+
+    public ContratoItensDTO converteContratoItens(ContratoItens contratoItens) {
+        return ContratoItensDTO.builder()
+                .id(contratoItens.getId())
+                .name(contratoItens.getProduct().getName())
+                .quantity(contratoItens.getQuantity())
+                .build();
+    }
+
+    private void validateField(String value, String description) {
+        if (Objects.isNull(value) || value.isBlank()) {throw new CredentialsException("Necessario informar "+ description);}
+    }
+
+    private void validateNumber(Float price, String description) {
+        if (Objects.isNull(price) || price < 0 ) {throw new CredentialsException("Necessario informar " + description);}
+    }
+
+    private void validateDTO(RegisterContratoDTO registerContratoDTO) {
+        validateField(registerContratoDTO.description(), "uma descrição para o contrato");
+        validateField(registerContratoDTO.nameClient(), "o nome do Cliente");
+        validateNumber(registerContratoDTO.labor(), "um valor para Mão de Obra");
     }
 
 }

@@ -5,6 +5,7 @@ import com.system.athon_stock.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @Setter
