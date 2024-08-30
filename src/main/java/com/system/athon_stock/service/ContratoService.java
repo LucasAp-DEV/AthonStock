@@ -108,13 +108,14 @@ public class ContratoService {
                 .nameClient(contrato.getNameClient())
                 .totalValueContrato(contrato.getTotalValueContrato())
                 .labor(contrato.getLabor())
+                .totalValueContrato(contrato.getTotalValueContrato())
                 .contratoItens(contratoItens)
                 .build();
     }
 
     public ContratoItensDTO converteContratoItens(ContratoItens contratoItens) {
         return ContratoItensDTO.builder()
-                .id(contratoItens.getId())
+                .id(contratoItens.getProduct().getId())
                 .name(contratoItens.getProduct().getName())
                 .quantity(contratoItens.getQuantity())
                 .build();
