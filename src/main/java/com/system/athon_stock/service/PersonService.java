@@ -72,7 +72,6 @@ public class PersonService {
         }
     }
 
-
     public UserDetails returnLogin(String login) {
         return personRepository.findByLogin(login);
     }

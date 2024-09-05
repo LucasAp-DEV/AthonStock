@@ -44,7 +44,7 @@ public class ContratoService {
 
     public void registerContrato(RegisterContratoDTO contratoDTO) {
         var person = returnPerson(contratoDTO.personId());
-        validateDTO(contratoDTO);
+        validateRegisterDTO(contratoDTO);
 
         Contrato contrato = new Contrato(contratoDTO.description(), contratoDTO.labor(), person, contratoDTO.nameClient());
         contratoRepository.save(contrato);
@@ -67,6 +67,62 @@ public class ContratoService {
         }
         contrato.calculateTotalValueContrato();
         contratoRepository.save(contrato);
+    }
+
+    public void updateContratoId(Long id, UpdateContratoDTO updateContratoDTO) {
+        returnPerson(updateContratoDTO.personId());
+        validateUpdateDTO(updateContratoDTO);
+
+        var contrato = returnContratoId(id);
+        contrato.setDescription(updateContratoDTO.description());
+        contrato.setLabor(updateContratoDTO.labor());
+        contrato.setNameClient(updateContratoDTO.nameClient());
+
+        for (ProductListContrato productListDTO : updateContratoDTO.products()) {
+            var product = returnProductId(productListDTO.id());
+
+            var existingItem = contrato.getContratoItens().stream()
+                    .filter(contratoItem -> contratoItem.getProduct().getId().equals(product.getId()))
+                    .findFirst();
+
+            if (existingItem.isPresent()) {
+                ContratoItens contratoItem = existingItem.get();
+
+                int newQuantity = productListDTO.quantity();
+
+                int quantityDifference = newQuantity - contratoItem.getQuantity();
+                if ((product.getQuantity() - quantityDifference) < 0) {
+                    throw new ReturnNullException("Quantidade insuficiente do produto: " + product.getName() + ": " + product.getQuantity() + " Unidades");
+                }
+
+                product.setQuantity(product.getQuantity() - quantityDifference);
+                contratoItem.setQuantity(newQuantity);
+
+            } else {
+                PriceProduct priceProduct = returnPriceProduct(product.getId());
+                int venda = -1 * productListDTO.quantity();
+
+                if ((product.getQuantity() + venda) < 0) {
+                    throw new ReturnNullException("Você não possui quantidade suficiente do produto: " + product.getName() + ": " + product.getQuantity() + " Unidades");
+                }
+
+                product.setQuantity(product.getQuantity() + venda);
+
+                ContratoItens contratoItens = new ContratoItens(product, contrato, priceProduct, productListDTO.quantity());
+                contratoItensRepository.save(contratoItens);
+                contrato.getContratoItens().add(contratoItens);
+            }
+        }
+        contrato.calculateTotalValueContrato();
+        contratoRepository.save(contrato);
+    }
+
+
+    private Contrato returnContratoId(Long id){
+        if (Objects.isNull(id)) {
+            throw new CredentialsException("Necessario informar o ID do contrato");
+        }
+        return contratoRepository.findById(id).orElseThrow(() -> new ReturnNullException("Contrato na encontrado"));
     }
 
     private Product returnProductId(Long id) {
@@ -118,6 +174,7 @@ public class ContratoService {
                 .id(contratoItens.getProduct().getId())
                 .name(contratoItens.getProduct().getName())
                 .quantity(contratoItens.getQuantity())
+                .priceSale(contratoItens.getValueProduct())
                 .build();
     }
 
@@ -129,10 +186,16 @@ public class ContratoService {
         if (Objects.isNull(price) || price < 0 ) {throw new CredentialsException("Necessario informar " + description);}
     }
 
-    private void validateDTO(RegisterContratoDTO registerContratoDTO) {
+    private void validateRegisterDTO(RegisterContratoDTO registerContratoDTO) {
         validateField(registerContratoDTO.description(), "uma descrição para o contrato");
         validateField(registerContratoDTO.nameClient(), "o nome do Cliente");
         validateNumber(registerContratoDTO.labor(), "um valor para Mão de Obra");
+    }
+
+    private void validateUpdateDTO(UpdateContratoDTO updateContratoDTO) {
+        validateField(updateContratoDTO.description(), "uma descrição para o contrato");
+        validateField(updateContratoDTO.nameClient(), "o nome do Cliente");
+        validateNumber(updateContratoDTO.labor(), "um valor para Mão de Obra");
     }
 
 }
