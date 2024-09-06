@@ -26,7 +26,7 @@ public class ContratosController {
         return contratosService.findAllContratos(id);
     }
 
-    @PutMapping("/user/update/{id}")
+    @PutMapping("/update/{id}")
     public void updateContrato(@PathVariable (value = "id") Long id, @RequestBody UpdateContratoDTO updateContratoDTO) {
         contratosService.updateContratoId(id, updateContratoDTO);
     }

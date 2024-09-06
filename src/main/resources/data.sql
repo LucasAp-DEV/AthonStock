@@ -1,6 +1,7 @@
 INSERT INTO person (login, password, name, email, phone, role)
 VALUES
-    ('lucas', '$2a$10$M9EXjmb1W4tfAm4UbH9hpeY8OR0jyUEA4M5FlLiYrUd9G/GchBZi6', 'Lucas Aparecido', 'lucas@gmail.com', '997574461', 'ADMIN');
+    ('lucas', '$2a$10$M9EXjmb1W4tfAm4UbH9hpeY8OR0jyUEA4M5FlLiYrUd9G/GchBZi6', 'Lucas Aparecido', 'lucas@gmail.com', '44997574461', 'ADMIN'),
+    ('teste', '$2a$10$M9EXjmb1W4tfAm4UbH9hpeY8OR0jyUEA4M5FlLiYrUd9G/GchBZi6', 'Teste Usuario', 'teste@gmail.com', '44997574466', 'ADMIN');
 
 INSERT INTO product (name, person_id, marca, code, quantity, status)
 VALUES

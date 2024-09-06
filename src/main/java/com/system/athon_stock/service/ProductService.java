@@ -2,6 +2,7 @@ package com.system.athon_stock.service;
 
 import com.system.athon_stock.domain.excessoes.CredentialsException;
 import com.system.athon_stock.domain.excessoes.FindByIdException;
+import com.system.athon_stock.domain.excessoes.ReturnNullException;
 import com.system.athon_stock.domain.person.Person;
 import com.system.athon_stock.domain.product.*;
 import com.system.athon_stock.repository.PersonRepository;
@@ -67,12 +68,15 @@ public class ProductService {
 
     public List<ReturnProduct> returnProductAll(Long id) {
         returnPerson(id);
-        List<Product> productList = productRepository.findAll();
+        List<Product> productList = productRepository.findByPerson_id(id);
         List<ReturnProduct> returnProducts = new ArrayList<>();
 
         for(Product product : productList) {
             PriceProduct priceProduct = obterPriceProductAssociado(product);
             returnProducts.add(converte(product, priceProduct));
+        }
+        if (returnProducts.isEmpty()) {
+            throw new ReturnNullException("Voce nao possui produtos no momento");
         }
         return returnProducts;
     }

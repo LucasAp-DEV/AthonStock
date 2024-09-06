@@ -78,14 +78,14 @@ public class ContratoService {
         contrato.setLabor(updateContratoDTO.labor());
         contrato.setNameClient(updateContratoDTO.nameClient());
 
-        for (ProductListContrato productListDTO : updateContratoDTO.products()) {
-            var product = returnProductId(productListDTO.id());
+        for (ProductListContrato productListDTO : updateContratoDTO.products()) { //Percorre cada produto no contrato
+            Product product = returnProductId(productListDTO.id());
 
             var existingItem = contrato.getContratoItens().stream()
                     .filter(contratoItem -> contratoItem.getProduct().getId().equals(product.getId()))
                     .findFirst();
 
-            if (existingItem.isPresent()) {
+            if (existingItem.isPresent()) { //Atualiza o produto no contrato e faz a modificação no estoque
                 ContratoItens contratoItem = existingItem.get();
 
                 int newQuantity = productListDTO.quantity();
@@ -98,7 +98,7 @@ public class ContratoService {
                 product.setQuantity(product.getQuantity() - quantityDifference);
                 contratoItem.setQuantity(newQuantity);
 
-            } else {
+            } else { //Salva o produto novo no contrato
                 PriceProduct priceProduct = returnPriceProduct(product.getId());
                 int venda = -1 * productListDTO.quantity();
 
@@ -119,23 +119,17 @@ public class ContratoService {
 
 
     private Contrato returnContratoId(Long id){
-        if (Objects.isNull(id)) {
-            throw new CredentialsException("Necessario informar o ID do contrato");
-        }
+        if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar o ID do contrato");}
         return contratoRepository.findById(id).orElseThrow(() -> new ReturnNullException("Contrato na encontrado"));
     }
 
     private Product returnProductId(Long id) {
-        if (Objects.isNull(id)) {
-            throw new CredentialsException("Necessario informar o ID do produto");
-        }
+        if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar o ID do produto");}
         return productRepository.findById(id).orElseThrow(() -> new FindByIdException("Produto não encontrada"));
     }
 
     private Person returnPerson(Long id) {
-        if (Objects.isNull(id)) {
-            throw new CredentialsException("Necessario informar o ID do usuario");
-        }
+        if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar o ID do usuario");}
         return personRepository.findById(id).orElseThrow(() -> new FindByIdException("Usuario não encontrada"));
     }
 
@@ -148,7 +142,7 @@ public class ContratoService {
 //    }
 
     private PriceProduct returnPriceProduct(Long productId) {
-        return priceProductRepository.findByProductId(productId).orElseThrow(() -> new FindByIdException("Preço do produto não encontrado para o ID: " + productId));
+        return priceProductRepository.findFirstByProduct_IdOrderByDateDesc(productId).orElseThrow(() -> new FindByIdException("Preço do produto não encontrado para o ID: " + productId));
     }
 
     private ContratoResponseDTO converte(Contrato contrato) {
