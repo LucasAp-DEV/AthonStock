@@ -33,4 +33,9 @@ public class ProductControll {
     public List<ReturnProduct> getAllProduct(@PathVariable(value = "id")Long id){
         return productService.returnProductAll(id);
     }
+
+    @GetMapping("/person/zero-stock/{id}")
+    public List<ReturnProduct> getAllProductZaroStoke(@PathVariable(value = "id")Long id){
+        return productService.returnProductZeroStock(id);
+    }
 }

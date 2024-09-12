@@ -19,6 +19,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByPerson_id(Long id);
 
+    List<Product> findByQuantity(int quantity);
+
     @Query("SELECT p FROM product p WHERE p.id IN :ids")
     List<Product> findAllByIdIn(@Param("ids") List<Long> ids);
 }

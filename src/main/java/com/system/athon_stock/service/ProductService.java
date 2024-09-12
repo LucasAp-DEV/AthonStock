@@ -81,6 +81,21 @@ public class ProductService {
         return returnProducts;
     }
 
+    public List<ReturnProduct> returnProductZeroStock(Long id) {
+        returnPerson(id);
+        List<Product> productList = productRepository.findByQuantity(0);
+        List<ReturnProduct> returnProducts = new ArrayList<>();
+
+        for(Product product : productList) {
+            PriceProduct priceProduct = obterPriceProductAssociado(product);
+            returnProducts.add(converte(product, priceProduct));
+        }
+        if (returnProducts.isEmpty()) {
+            throw new ReturnNullException("Voce nao possui produtos com 0 de estoque");
+        }
+        return returnProducts;
+    }
+
     public Product returnProductId(Long id){
         if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar o ID do produto");}
         return productRepository.findById(id).orElseThrow(() -> new FindByIdException("Produto não encontrada"));

@@ -1,7 +1,5 @@
 package com.system.athon_stock.infra;
 
-import com.system.athon_stock.domain.excessoes.CredentialsException;
-import com.system.athon_stock.domain.excessoes.FindByIdException;
 import com.system.athon_stock.repository.PersonRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
