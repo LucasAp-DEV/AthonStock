@@ -40,6 +40,7 @@ public class SecurityConfigurations {
                                 .requestMatchers(HttpMethod.PUT, "/product/update/{id}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/product/person/all/{id}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/product/person/zero-stock/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/product/person/low-stock/{id}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/product/update/price/{id}").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/product/update/stock/{id}").permitAll()
 

@@ -24,7 +24,34 @@ VALUES
     ('ALTERNADOR', 1, 'PowerGen', '217000p034zzzaaabbb30', 8, true),
     ('CORREIA DENTADA', 1, 'BeltDrive', '228000q035bccdddeee31', 15, true),
     ('FILTRO DE CABINE', 1, 'CabinAir', '239000r036effggghhh32', 7, true),
-    ('LÂMPADA DE FAROL', 1, 'BrightLight', '240000s037gghhiiijj33', 25, true);
+    ('LÂMPADA DE FAROL', 1, 'BrightLight', '240000s037gghhiiijj33', 25, true),
+    ('RODA DE LIGA LEVE', 1, 'AlloyWheel', '241000t038hhiijjkkll34', 12, true),
+    ('MOTOR', 1, 'EngineMaster', '252000u039jjkllmmnnop35', 1, false),
+    ('EMBREAGEM', 1, 'ClutchPro', '263000v040mnopqrssuu36', 6, true),
+    ('CAIXA DE CÂMBIO', 1, 'GearBoxCo', '274000w041pqrstuuvvv37', 2, true),
+    ('CÂMERA DE RÉ', 1, 'ReverseVision', '285000x042qrstuvwxy38', 10, true),
+    ('ESCAPAMENTO', 1, 'ExhaustPro', '296000y043stuvwxzzz39', 8, true),
+    ('LANTERNA', 1, 'BrightTail', '307000z044uvwxyzaaaa40', 14, true),
+    ('TURBINA', 1, 'TurboBoost', '318000a045abcdddeffg41', 5, true),
+    ('PAINEL', 1, 'DashMaster', '329000b046defghhiijk42', 3, true),
+    ('CILINDRO MESTRE', 1, 'MasterBrake', '340000c047ghhijjklmn43', 6, true),
+    ('DISCO DE FREIO', 1, 'DiscBraker', '351000d048ijkklmnoop44', 10, true),
+    ('CHAVE DE RODA', 1, 'WheelKey', '362000e049klmmnooppq45', 25, true),
+    ('MACACO', 1, 'LiftMax', '373000f050mnoopqrrss46', 10, true),
+    ('CAPÔ', 1, 'HoodCover', '384000g051opqrssuutv47', 7, true),
+    ('PORTA-MALAS', 1, 'TrunkSpace', '395000h052qrssttuuvww48', 4, true),
+    ('LIMPADOR DE PARA-BRISA', 1, 'WiperPro', '406000i053stuuvwwxx49', 20, true),
+    ('RADIADOR', 1, 'CoolPro', '417000j054uvwwxyyzzz50', 8, true),
+    ('CABO DE VELA', 1, 'SparkCable', '428000k055wxyzzaaabb51', 15, true),
+    ('PARALAMA', 1, 'FenderMax', '439000l056zzabcdeffg52', 5, true),
+    ('PARA-CHOQUE', 1, 'BumperGuard', '450000m057cdefgghhiij53', 10, true),
+    ('VIDRO TRASEIRO', 1, 'RearGlass', '461000n058fghhijjkllm54', 7, true),
+    ('VIDRO DIANTEIRO', 1, 'FrontGlass', '472000o059ghijkllmnnn55', 5, true),
+    ('PONTEIRA DE ESCAPAMENTO', 1, 'TailPipe', '483000p060ijkllmnnop56', 3, true),
+    ('PARAFUSO DE RODA', 1, 'WheelBolt', '494000q061lmnooppqqrr57', 50, true),
+    ('CHAVE DE IGNIÇÃO', 1, 'IgnitionKey', '505000r062mnopqrssstt58', 2, true),
+    ('TANQUE DE COMBUSTÍVEL', 1, 'FuelTank', '516000s063nopqrstuuvv59', 1, false);
+
 
 
 
@@ -49,7 +76,34 @@ VALUES
     ('2024-07-24', 110, 45, 55, 17),
     ('2024-07-24', 65, 25, 30, 18),
     ('2024-07-24', 55, 20, 25, 19),
-    ('2024-07-24', 100, 35, 45, 20);
+    ('2024-07-24', 100, 35, 45, 20),
+    ('2024-07-24', 130, 50, 65, 21),
+    ('2024-07-24', 85, 30, 40, 22),
+    ('2024-07-24', 110, 45, 55, 23),
+    ('2024-07-24', 70, 20, 30, 24),
+    ('2024-07-24', 95, 35, 45, 25),
+    ('2024-07-24', 115, 50, 60, 26),
+    ('2024-07-24', 80, 30, 40, 27),
+    ('2024-07-24', 90, 35, 45, 28),
+    ('2024-07-24', 120, 40, 55, 29),
+    ('2024-07-24', 135, 55, 70, 30),
+    ('2024-07-24', 95, 40, 50, 31),
+    ('2024-07-24', 85, 30, 40, 32),
+    ('2024-07-24', 75, 25, 35, 33),
+    ('2024-07-24', 105, 45, 60, 34),
+    ('2024-07-24', 60, 20, 25, 35),
+    ('2024-07-24', 115, 50, 65, 36),
+    ('2024-07-24', 100, 40, 55, 37),
+    ('2024-07-24', 80, 30, 40, 38),
+    ('2024-07-24', 90, 35, 45, 39),
+    ('2024-07-24', 135, 55, 75, 40),
+    ('2024-07-24', 125, 45, 60, 41),
+    ('2024-07-24', 65, 20, 30, 42),
+    ('2024-07-24', 105, 40, 55, 43),
+    ('2024-07-24', 95, 35, 50, 44),
+    ('2024-07-24', 75, 25, 35, 45),
+    ('2024-07-24', 85, 30, 40, 46);
+
 
 
 INSERT INTO contrato (description, date, labor, value_products, name_client, person_id)
@@ -81,9 +135,7 @@ VALUES
     ('Contrato de revisão de direção', '2024-07-24', 230.00, 40.00, 'Aline Ramos', 1),
     ('Contrato de substituição de lâmpadas de freio', '2024-07-24', 85.00, 15.00, 'Diego Moreira', 1),
     ('Contrato de troca de filtros de cabine', '2024-07-24', 100.00, 25.00, 'Michele Borges', 1),
-    ('Contrato de revisão de injeção eletrônica', '2024-07-24', 200.00, 45.00, 'Roberto Lima', 1),
-    ('Contrato de troca de óleos e fluidos', '2024-07-24', 70.00, 15.00, 'Vitor Mendes', 1),
-    ('Contrato de revisão completa premium', '2024-07-24', 400.00, 75.00, 'Beatriz Carvalho', 1);
+    ('Contrato de revisão de injeção eletrônica', '2024-07-24', 200.00, 45.00, 'Roberto Lima', 1);
 
 INSERT INTO contrato_itens (value_product, contrato_id, product_id, quantity)
 VALUES
@@ -114,9 +166,7 @@ VALUES
     (40.00, 25, 15, 2),
     (15.00, 26, 10, 8),
     (25.00, 27, 19, 3),
-    (45.00, 28, 11, 9),
-    (15.00, 29, 5, 5),
-    (75.00, 30, 3, 1);
+    (45.00, 28, 11, 9);
 
 
 
