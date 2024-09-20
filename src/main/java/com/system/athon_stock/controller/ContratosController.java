@@ -7,6 +7,7 @@ import com.system.athon_stock.service.ContratoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,5 +30,12 @@ public class ContratosController {
     @PutMapping("/update/{id}")
     public void updateContrato(@PathVariable (value = "id") Long id, @RequestBody UpdateContratoDTO updateContratoDTO) {
         contratosService.updateContratoId(id, updateContratoDTO);
+    }
+
+    @GetMapping("/user/findByData/{id}")
+    public List<ContratoResponseDTO> getAllContratoFindByData(@PathVariable Long id,
+                                                              @RequestParam("dataInicio") LocalDate dataInicio,
+                                                              @RequestParam("dataFim") LocalDate dataFim) {
+        return contratosService.findAllContratosByData(id, dataInicio, dataFim);
     }
 }

@@ -12,9 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -39,6 +38,20 @@ public class ContratoService {
         if (contratoResponseDTOs.isEmpty()) {
             throw new ReturnNullException("Voce nao possui contratos no momento");
         }
+        return contratoResponseDTOs;
+    }
+
+    public List<ContratoResponseDTO> findAllContratosByData(Long id, LocalDate dataInicio, LocalDate dataFim) {
+        returnPerson(id);
+        if (dataInicio == null || dataFim == null) {throw new IllegalArgumentException("As datas de início e fim não podem ser nulas");}
+
+        if (dataInicio.isAfter(dataFim)) {throw new ReturnNullException("A data de início deve ser anterior à data final");}
+
+        List<Contrato> contratos = contratoRepository.findByPerson_IdAndDateBetween(id, dataInicio, dataFim);
+        List<ContratoResponseDTO> contratoResponseDTOs = new ArrayList<>();
+
+        for (Contrato contrato : contratos) {contratoResponseDTOs.add(converte(contrato));}
+        if (contratoResponseDTOs.isEmpty()) {throw new ReturnNullException("Voce nao possui contratos no momento");}
         return contratoResponseDTOs;
     }
 
@@ -142,7 +155,8 @@ public class ContratoService {
 //    }
 
     private PriceProduct returnPriceProduct(Long productId) {
-        return priceProductRepository.findFirstByProduct_IdOrderByDateDesc(productId).orElseThrow(() -> new FindByIdException("Preço do produto não encontrado para o ID: " + productId));
+        return priceProductRepository.findFirstByProduct_IdOrderByDateDesc(productId).orElseThrow(() ->
+                new FindByIdException("Preço do produto não encontrado para o ID: " + productId));
     }
 
     private ContratoResponseDTO converte(Contrato contrato) {
@@ -164,11 +178,17 @@ public class ContratoService {
     }
 
     public ContratoItensDTO converteContratoItens(ContratoItens contratoItens) {
+        var productId = contratoItens.getProduct().getId();
+
+        Optional<PriceProduct> priceProductcusto = priceProductRepository.findFirstByProduct_IdOrderByDateDesc(productId);
+        var price = priceProductcusto.get().getPrice();
+
         return ContratoItensDTO.builder()
                 .id(contratoItens.getProduct().getId())
                 .name(contratoItens.getProduct().getName())
                 .quantity(contratoItens.getQuantity())
                 .priceSale(contratoItens.getValueProduct())
+                .priceCustoProduct(price)
                 .build();
     }
 

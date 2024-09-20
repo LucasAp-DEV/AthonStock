@@ -47,6 +47,7 @@ public class SecurityConfigurations {
                                 .requestMatchers(HttpMethod.POST, "/contrato/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/contrato/user/{id}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/contrato/update/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/contrato/user/findByData/{id}").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "/admin/unblock-user").permitAll()
 //                                .requestMatchers(HttpMethod.POST, "/admin/unblock-user").hasRole("ADMIN")
