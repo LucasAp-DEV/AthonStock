@@ -43,11 +43,22 @@ public class ContratoService {
 
     public List<ContratoResponseDTO> findAllContratosByData(Long id, LocalDate dataInicio, LocalDate dataFim) {
         returnPerson(id);
-        if (dataInicio == null || dataFim == null) {throw new IllegalArgumentException("As datas de início e fim não podem ser nulas");}
+        if (dataInicio == null || dataFim == null) {throw new ReturnNullException("As datas de início e fim não podem ser nulas");}
 
         if (dataInicio.isAfter(dataFim)) {throw new ReturnNullException("A data de início deve ser anterior à data final");}
 
         List<Contrato> contratos = contratoRepository.findByPerson_IdAndDateBetween(id, dataInicio, dataFim);
+        List<ContratoResponseDTO> contratoResponseDTOs = new ArrayList<>();
+
+        for (Contrato contrato : contratos) {contratoResponseDTOs.add(converte(contrato));}
+        if (contratoResponseDTOs.isEmpty()) {throw new ReturnNullException("Voce nao possui contratos no momento");}
+        return contratoResponseDTOs;
+    }
+
+    public List<ContratoResponseDTO> findAllContratosByNameClient(Long id, String nameClient) {
+        returnPerson(id);
+        returnClientName(nameClient);
+        List<Contrato> contratos = contratoRepository.findByPerson_IdAndNameClientIgnoreCase(id, nameClient);
         List<ContratoResponseDTO> contratoResponseDTOs = new ArrayList<>();
 
         for (Contrato contrato : contratos) {contratoResponseDTOs.add(converte(contrato));}
@@ -130,6 +141,10 @@ public class ContratoService {
         contratoRepository.save(contrato);
     }
 
+    private void returnClientName(String nameClient) {
+        if (nameClient.isEmpty() || nameClient.isBlank()) {throw new CredentialsException("Necessario inserir nome do cliente");}
+        contratoRepository.findByNameClientIgnoreCase(nameClient).orElseThrow(() -> new ReturnNullException("Nome do cliente nao encontrado"));
+    }
 
     private Contrato returnContratoId(Long id){
         if (Objects.isNull(id)) {throw new CredentialsException("Necessario informar o ID do contrato");}
@@ -188,7 +203,7 @@ public class ContratoService {
                 .name(contratoItens.getProduct().getName())
                 .quantity(contratoItens.getQuantity())
                 .priceSale(contratoItens.getValueProduct())
-                .priceCustoProduct(price)
+                .price(price)
                 .build();
     }
 

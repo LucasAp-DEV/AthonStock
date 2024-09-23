@@ -46,6 +46,7 @@ public class SecurityConfigurations {
 
                                 .requestMatchers(HttpMethod.POST, "/contrato/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/contrato/user/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/contrato/user/name/client/{id}").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/contrato/update/{id}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/contrato/user/findByData/{id}").permitAll()
 

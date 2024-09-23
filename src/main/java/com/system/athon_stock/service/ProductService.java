@@ -101,7 +101,8 @@ public class ProductService {
         if (primeiroValor > segundoValor) {
             throw new ReturnNullException("O primeiro valor precisa ser menor que o segundo valor");
         }
-        List<Product> productList = productRepository.findByQuantityBetween(primeiroValor, segundoValor);
+
+        List<Product> productList = productRepository.findByPerson_idAndQuantityBetween(id, primeiroValor, segundoValor);
         List<ReturnProduct> returnProducts = new ArrayList<>();
 
         for(Product product : productList) {

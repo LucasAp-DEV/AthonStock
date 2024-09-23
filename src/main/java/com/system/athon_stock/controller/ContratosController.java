@@ -38,4 +38,10 @@ public class ContratosController {
                                                               @RequestParam("dataFim") LocalDate dataFim) {
         return contratosService.findAllContratosByData(id, dataInicio, dataFim);
     }
+
+    @GetMapping("/user/name/client/{id}")
+    public List<ContratoResponseDTO> getAllContratoFindByNameClient(@PathVariable Long id,
+                                                              @RequestParam("nameClient") String nameClient) {
+        return contratosService.findAllContratosByNameClient(id, nameClient);
+    }
 }

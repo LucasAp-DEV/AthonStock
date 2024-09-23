@@ -53,5 +53,4 @@ public class Contrato {
         Float totalProducts = calculateTotalValueProduct();
         this.totalValueContrato = totalProducts + this.labor;
     }
-    
 }
