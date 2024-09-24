@@ -18,11 +18,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByPerson_id(Long id);
 
-    List<Product> findByQuantity(int quantity);
+    List<Product> findByPerson_idAndQuantity(Long id, int quantity);
 
     @Query("SELECT p FROM product p WHERE p.person.id = :id AND p.quantity BETWEEN :primeiroValor AND :segundoValor")
     List<Product> findByPerson_idAndQuantityBetween(@Param("id") Long id, @Param("primeiroValor") Integer primeiroValor, @Param("segundoValor") Integer segundoValor);
 
-//    @Query("SELECT p FROM product p WHERE p.quantity BETWEEN :primeiroValor AND :segundoValor")
-//    List<Product> findByQuantityBetween(@Param("primeiroValor") int primeiroValor, @Param("segundoValor") int segundoValor);
 }

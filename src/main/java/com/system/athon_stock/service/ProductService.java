@@ -83,7 +83,7 @@ public class ProductService {
 
     public List<ReturnProduct> returnProductZeroStock(Long id) {
         returnPerson(id);
-        List<Product> productList = productRepository.findByQuantity(0);
+        List<Product> productList = productRepository.findByPerson_idAndQuantity(id,0);
         List<ReturnProduct> returnProducts = new ArrayList<>();
 
         for(Product product : productList) {
