@@ -7,12 +7,12 @@ import com.system.athon_stock.domain.excessoes.ReturnNullException;
 import com.system.athon_stock.domain.person.Person;
 import com.system.athon_stock.domain.product.PriceProduct;
 import com.system.athon_stock.domain.product.Product;
+import com.system.athon_stock.domain.contrato.request.ContratoServiceRequest;
 import com.system.athon_stock.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,13 +41,13 @@ public class ContratoService {
         return contratoResponseDTOs;
     }
 
-    public List<ContratoResponseDTO> findAllContratosByData(Long id, LocalDate dataInicio, LocalDate dataFim) {
-        returnPerson(id);
-        if (dataInicio == null || dataFim == null) {throw new ReturnNullException("As datas de início e fim não podem ser nulas");}
+    public List<ContratoResponseDTO> findAllContratosByData(ContratoServiceRequest request) {
+        returnPerson(request.id());
+        if (request.dataInicio() == null || request.dataFim() == null) {throw new ReturnNullException("As datas de início e fim não podem ser nulas");}
 
-        if (dataInicio.isAfter(dataFim)) {throw new ReturnNullException("A data de início deve ser anterior à data final");}
+        if (request.dataInicio().isAfter(request.dataFim())) {throw new ReturnNullException("A data de início deve ser anterior à data final");}
 
-        List<Contrato> contratos = contratoRepository.findByPerson_IdAndDateBetween(id, dataInicio, dataFim);
+        List<Contrato> contratos = contratoRepository.findByPerson_IdAndDateBetween(request.id(), request.dataInicio(), request.dataFim());
         List<ContratoResponseDTO> contratoResponseDTOs = new ArrayList<>();
 
         for (Contrato contrato : contratos) {contratoResponseDTOs.add(converte(contrato));}

@@ -3,6 +3,7 @@ package com.system.athon_stock.controller;
 import com.system.athon_stock.domain.contrato.ContratoResponseDTO;
 import com.system.athon_stock.domain.contrato.RegisterContratoDTO;
 import com.system.athon_stock.domain.contrato.UpdateContratoDTO;
+import com.system.athon_stock.domain.contrato.request.ContratoServiceRequest;
 import com.system.athon_stock.service.ContratoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -36,12 +37,11 @@ public class ContratosController {
     public List<ContratoResponseDTO> getAllContratoFindByData(@PathVariable Long id,
                                                               @RequestParam("dataInicio") LocalDate dataInicio,
                                                               @RequestParam("dataFim") LocalDate dataFim) {
-        return contratosService.findAllContratosByData(id, dataInicio, dataFim);
+        return contratosService.findAllContratosByData(ContratoServiceRequest.builder().id(id).dataInicio(dataInicio).dataFim(dataFim).build());
     }
 
     @GetMapping("/user/name/client/{id}")
-    public List<ContratoResponseDTO> getAllContratoFindByNameClient(@PathVariable Long id,
-                                                              @RequestParam("nameClient") String nameClient) {
+    public List<ContratoResponseDTO> getAllContratoFindByNameClient(@PathVariable Long id, @RequestParam("nameClient") String nameClient) {
         return contratosService.findAllContratosByNameClient(id, nameClient);
     }
 }
