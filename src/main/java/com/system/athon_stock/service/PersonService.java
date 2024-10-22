@@ -88,6 +88,7 @@ public class PersonService {
                 .name(person.getName())
                 .login(person.getLogin())
                 .email(person.getEmail())
+                .role(person.getRole())
                 .phone(person.getPhone());
         return builder.build();
     }
