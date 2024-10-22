@@ -170,7 +170,7 @@ public class ContratoService {
 //    }
 
     private PriceProduct returnPriceProduct(Long productId) {
-        return priceProductRepository.findFirstByProduct_IdOrderByDateDesc(productId).orElseThrow(() ->
+        return priceProductRepository.findFirstByProduct_IdOrderByIdDesc(productId).orElseThrow(() ->
                 new FindByIdException("Preço do produto não encontrado para o ID: " + productId));
     }
 
@@ -195,7 +195,7 @@ public class ContratoService {
     public ContratoItensDTO converteContratoItens(ContratoItens contratoItens) {
         var productId = contratoItens.getProduct().getId();
 
-        Optional<PriceProduct> priceProductcusto = priceProductRepository.findFirstByProduct_IdOrderByDateDesc(productId);
+        Optional<PriceProduct> priceProductcusto = priceProductRepository.findFirstByProduct_IdOrderByIdDesc(productId);
         var price = priceProductcusto.get().getPrice();
 
         return ContratoItensDTO.builder()

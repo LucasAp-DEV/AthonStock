@@ -140,7 +140,7 @@ public class ProductService {
 
     private Optional<PriceProduct> returnPriceProduct(Long id){
         if (Objects.isNull(id)) {throw new CredentialsException("Necessario inserir as credenciais de Preço (ID)");}
-        return priceProductRepository.findFirstByProduct_IdOrderByDateDesc(id);
+        return priceProductRepository.findFirstByProduct_IdOrderByIdDesc(id);
     }
 
     private void validateRegisterProduct(RegisterProductDTO data) {
