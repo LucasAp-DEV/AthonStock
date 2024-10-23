@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,12 +28,15 @@ public class LoginAttemptService {
     }
 
     public void loginFailed(String login) {
-        int attempts = 0;
-        if (attemptsCache.containsKey(login)) {
-            attempts = attemptsCache.get(login);
+        Person loginADM = returnLogin(login);
+        if (!"ADMIN".equals(loginADM.getRole().name())) {
+            int attempts = 0;
+            if (attemptsCache.containsKey(login)) {
+                attempts = attemptsCache.get(login);
+            }
+            attempts++;
+            attemptsCache.put(login, attempts);
         }
-        attempts++;
-        attemptsCache.put(login, attempts);
     }
 
     public boolean isBlocked(String login) {
@@ -52,4 +56,10 @@ public class LoginAttemptService {
         var username = getPerson(login.getLogin());
         attemptsCache.remove(username.getUsername());
     }
+
+    public Person returnLogin(String login) {
+        return personRepository.findByLoginUser(login);
+
+    }
+
 }

@@ -30,11 +30,11 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers(HttpMethod.GET, "/person/{id}").hasRole("USER")
                                 .requestMatchers(HttpMethod.POST, "/person/login").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/person/register").hasRole("USER")
+                                .requestMatchers(HttpMethod.POST, "/person/register").hasRole("ADMIN")
 
-                                .requestMatchers(HttpMethod.POST, "/store/register").hasRole("USER")
-                                .requestMatchers(HttpMethod.PUT, "/store/update/{id}").hasRole("USER")
-                                .requestMatchers(HttpMethod.GET, "/store/person/{id}").hasRole("USER")
+//                                .requestMatchers(HttpMethod.POST, "/store/register").hasRole("USER")
+//                                .requestMatchers(HttpMethod.PUT, "/store/update/{id}").hasRole("USER")
+//                                .requestMatchers(HttpMethod.GET, "/store/person/{id}").hasRole("USER")
 
                                 .requestMatchers(HttpMethod.POST, "/product/register").hasRole("USER")
                                 .requestMatchers(HttpMethod.PUT, "/product/update/{id}").hasRole("USER")
