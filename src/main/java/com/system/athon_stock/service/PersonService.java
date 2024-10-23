@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -46,7 +47,7 @@ public class PersonService {
             loginAttemptService.loginSucceeded(data.login());
             var token = tokenService.generateToken((Person) authenticate.getPrincipal());
             return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
-        }catch (BadCredentialsException e) {
+        } catch (BadCredentialsException e) {
             loginAttemptService.loginFailed(data.login());
             throw new CredentialsException("Credenciais Invalidas");
         }
@@ -57,8 +58,11 @@ public class PersonService {
             throw new RegisterPersonException("Login ja esta em uso");
         if (returnEmail(data.email()) != null)
             throw new RegisterPersonException("Email ja esta em uso");
+        if (findByPhone(data.phone()) != null)
+            throw new RegisterPersonException("Telefone ja esta em uso");
         var encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         Person person = new Person(data.login(), encryptedPassword, data.email(), data.name(), data.phone(), data.role());
+        person.bindRegister(data);
         personRepository.save(person);
     }
 
@@ -75,13 +79,18 @@ public class PersonService {
     public UserDetails returnLogin(String login) {
         return personRepository.findByLogin(login);
     }
+
+    public UserDetails findByPhone(String phone) {
+        return personRepository.findByPhone(phone);
+    }
+
     public UserDetails returnEmail(String email) {
         return personRepository.findByEmail(email);
     }
-    public Person returnId(Long id) {
-        return personRepository.findById(id).orElseThrow(()-> new FindByIdException("Usuario não encontrado"));
-    }
 
+    public Person returnId(Long id) {
+        return personRepository.findById(id).orElseThrow(() -> new FindByIdException("Usuario não encontrado"));
+    }
 
     public ResponsePersonDTO responseBuilderDTO(Person person) {
         ResponsePersonDTO.ResponsePersonDTOBuilder builder = ResponsePersonDTO.builder()
@@ -92,7 +101,6 @@ public class PersonService {
                 .phone(person.getPhone());
         return builder.build();
     }
-
 
     private void validateAutentication(AuthenticationDTO data) {
         if (Objects.isNull(data.login()))

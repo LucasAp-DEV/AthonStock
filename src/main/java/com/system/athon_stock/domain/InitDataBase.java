@@ -4,6 +4,7 @@ import com.system.athon_stock.domain.person.Person;
 import com.system.athon_stock.domain.person.UserRole;
 import com.system.athon_stock.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,17 +19,15 @@ public class InitDataBase implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-
-        var user = personRepository.findByLoginAndId("admin", 1)
+        var user = personRepository.findByLoginAndId("admin",1)
                 .orElse(Person.builder()
                         .login("admin")
                         .password(passwordEncoder.encode("admin"))
                         .role(UserRole.ADMIN)
                         .phone("44997574461")
-                        .email("admin@GMAIL.com")
-                        .name("admin")
+                        .email("admin@gmail.com")
+                        .name("Admin")
                         .build());
         personRepository.save(user);
-
     }
 }

@@ -2,21 +2,23 @@ package com.system.athon_stock.service;
 
 import com.system.athon_stock.domain.UnblockUserRequest;
 import com.system.athon_stock.domain.excessoes.CredentialsException;
+import com.system.athon_stock.domain.person.Person;
 import com.system.athon_stock.repository.PersonRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class LoginAttemptService {
 
     private final Map<String, Integer> attemptsCache;
-    private final PersonRepository repository;
+    private final PersonRepository personRepository;
 
     public LoginAttemptService(PersonRepository repository) {
-        this.repository = repository;
+        this.personRepository = repository;
         this.attemptsCache = new HashMap<>();
     }
 
@@ -39,7 +41,7 @@ public class LoginAttemptService {
     }
 
     private UserDetails getPerson(String login) {
-        var person = repository.findByLogin(login);
+        var person = personRepository.findByLogin(login);
         if(person == null) {
             throw new CredentialsException("Usuario nao existe no sistema");
         }

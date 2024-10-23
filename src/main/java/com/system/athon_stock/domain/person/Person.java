@@ -36,7 +36,7 @@ public class Person implements UserDetails {
     private String email;
     private String phone;
 
-    @OneToMany(mappedBy = "person",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
@@ -56,7 +56,8 @@ public class Person implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
@@ -96,20 +97,36 @@ public class Person implements UserDetails {
 
     private void validatePerson(UpdatePersonDTO person) {
         if (Objects.isNull(person.name()) || person.name().isBlank())
-            throw new CredentialsException("é necessario informar um Nome");
-        if (!Objects.equals(person.email(), "") && !EMAIL_PATTERN.matcher(person.email()).matches()) {
-            throw new CredentialsException("é necessario informar um Email válido");
-        }
-        if (!Objects.equals(person.phone(), "") && !PHONE_PATTERN.matcher(person.phone()).matches()) {
-            throw new CredentialsException("é necessario informar um Telefone válido");
-        }
+            throw new CredentialsException("É necessario informar um Nome");
+        if (!Objects.equals(person.email(), "") && !EMAIL_PATTERN.matcher(person.email()).matches())
+            throw new CredentialsException("É necessario informar um Email válido");
+        if (!Objects.equals(person.phone(), "") && !PHONE_PATTERN.matcher(person.phone()).matches())
+            throw new CredentialsException("É necessario informar um Telefone válido");
     }
 
-    public void bind (UpdatePersonDTO person) {
+    private void validateRegisterPerson(RegisterPersonDTO registerPersonDTO) {
+        if (Objects.isNull(registerPersonDTO.login()) || registerPersonDTO.login().isBlank())
+            throw new CredentialsException("É necessario informar um Login");
+        if (Objects.isNull(registerPersonDTO.name()) || registerPersonDTO.name().isBlank())
+            throw new CredentialsException("É necessario informar um Nome");
+        if (!Objects.equals(registerPersonDTO.email(), "") && !EMAIL_PATTERN.matcher(registerPersonDTO.email()).matches())
+            throw new CredentialsException("É necessario informar um Email válido");
+        if (!Objects.equals(registerPersonDTO.phone(), "") && !PHONE_PATTERN.matcher(registerPersonDTO.phone()).matches())
+            throw new CredentialsException("É necessario informar um Telefone válido");
+    }
+
+    public void bind(UpdatePersonDTO person) {
         validatePerson(person);
         this.name = person.name();
         this.email = person.email();
         this.phone = person.phone();
+    }
+
+    public void bindRegister(RegisterPersonDTO registerPersonDTO) {
+        validateRegisterPerson(registerPersonDTO);
+        this.name = registerPersonDTO.name();
+        this.email = registerPersonDTO.email();
+        this.phone = registerPersonDTO.phone();
     }
 
 }
